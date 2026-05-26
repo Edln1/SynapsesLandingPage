@@ -49,7 +49,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:60px;d
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
 /* DEMO WINDOW */
-.demo-wrapper{max-width:1060px;margin:0 auto;padding:0 40px;animation:fadeUp .9s .5s ease both}
+.demo-wrapper{max-width:1110px;margin:0 auto;padding:0 40px;animation:fadeUp .9s .5s ease both}
 .demo-chrome{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 0 0 1px rgba(124,106,247,0.15),0 40px 100px rgba(0,0,0,0.75),0 0 80px rgba(124,106,247,0.08)}
 .demo-titlebar{background:#0c0c18;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,0.06)}
 .demo-dots{display:flex;gap:6px}
@@ -61,7 +61,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:60px;d
    SYNAPSES APP — EXACT STYLES COPIED FROM SOURCING.HTML
 ═══════════════════════════════════════════════════════ */
 .syn-app{
-  display:flex;height:620px;background:#0a0a0f;
+  display:flex;height:588px;background:#0a0a0f;
   --bg:#0a0a0f;--sidebar:rgba(15,15,26,0.85);--surface:#13131f;--surface2:#1a1a2e;
   --border:rgba(255,255,255,0.07);--accent:#7c6af7;--accent2:#e85d96;--accent3:#00d9a8;
   --text:#e8e8f0;--muted:#6b6b8a;--radius:14px;
@@ -254,8 +254,8 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
 .footer-links a:hover{color:var(--text)}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-@media(max-width:900px){.feat-grid{grid-template-columns:1fr 1fr}.steps-grid,.testi-grid{grid-template-columns:1fr}nav{padding:0 20px}.nav-links{display:none}.syn-app{height:500px}}
-@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.lp-section{padding:60px 20px}.syn-sidebar{width:160px}.syn-app{height:420px}footer{flex-direction:column;gap:18px}}
+@media(max-width:900px){.feat-grid{grid-template-columns:1fr 1fr}.steps-grid,.testi-grid{grid-template-columns:1fr}nav{padding:0 20px}.nav-links{display:none}.syn-app{height:450px}}
+@media(max-width:600px){.feat-grid{grid-template-columns:1fr}.lp-section{padding:60px 20px}.syn-sidebar{width:160px}.syn-app{height:380px}footer{flex-direction:column;gap:18px}}
 </style>
 </head>
 <body>
@@ -315,20 +315,33 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
         <div class="demo-url">app.synapses.ai</div>
       </div>
 
-      <!-- ═══ THE REAL SYNAPSES APP — iframe ═══ -->
-      <div class="syn-app" id="synApp" style="overflow:hidden;position:relative">
+      <!-- ═══ THE REAL SYNAPSES APP UI ═══ -->
+      <div class="syn-app" id="synApp" style="overflow:hidden;position:relative;display:block;height:588px;">
         <iframe
           id="synIframe"
           src="sourcing.html"
-          style="width:100%;height:100%;border:none;display:block"
+          style="width:1470px;height:840px;border:none;display:block;transform:scale(0.70);transform-origin:top left;"
           allow="microphone; clipboard-write"
         ></iframe>
-        <!-- Fallback shown only if iframe fails (local file:// opening without a server) -->
         <div id="synFallback" style="display:none;position:absolute;inset:0;background:#0a0a0f;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:'DM Sans',sans-serif;text-align:center;padding:40px">
           <div style="font-size:40px">🚀</div>
           <div style="color:#e0deff;font-size:18px;font-weight:600">Live demo requires hosting</div>
           <div style="color:rgba(180,174,255,0.6);font-size:13px;max-width:340px;line-height:1.7">Upload both <code style="color:#7c6af7">index.html</code> and <code style="color:#7c6af7">sourcing.html</code> to GitHub Pages — the full app will load here automatically.</div>
-          <a href="https://github.com/new" target="_blank" style="margin-top:8px;padding:10px 22px;background:rgba(124,106,247,0.15);border:1px solid rgba(124,106,247,0.4);border-radius:8px;color:#a5b4fc;font-size:13px;text-decoration:none">Open GitHub →</a>
+        </div>
+        <!-- Voice demo overlay — sits on top of iframe during voice scene -->
+        <div id="dVoiceOverlay" style="display:none;position:absolute;inset:0;z-index:10;background:rgba(8,7,20,0.92);backdrop-filter:blur(18px);align-items:center;justify-content:center;flex-direction:column;gap:24px;">
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+            <div id="dVoiceHalo" style="display:none;position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(124,106,247,0.25) 0%,transparent 70%);animation:voiceHalo 1.8s ease-in-out infinite;"></div>
+            <div id="dVoiceCore" style="width:96px;height:96px;border-radius:50%;background:rgba(124,106,247,0.15);border:2px solid rgba(124,106,247,0.5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(124,106,247,0.6),0 0 60px rgba(124,106,247,0.25);transition:box-shadow .4s;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(180,170,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:32px;">
+            <div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div><div class="dv-bar"></div>
+          </div>
+          <div id="dVoiceLabel" style="font-size:14px;color:rgba(200,195,255,0.85);font-family:'DM Sans',sans-serif;letter-spacing:.01em;min-height:20px;"></div>
+          <div id="dVoiceReply" style="display:none;font-size:13px;color:rgba(160,155,220,0.75);font-family:'DM Sans',sans-serif;max-width:340px;text-align:center;line-height:1.6;"></div>
+          <div id="dVoiceToast" style="display:none;background:rgba(0,217,168,0.12);border:1px solid rgba(0,217,168,0.3);border-radius:10px;padding:8px 16px;font-size:12px;color:rgba(0,217,168,0.9);font-family:'DM Sans',sans-serif;">✓ Note saved</div>
         </div>
       </div><!-- /syn-app -->
     </div><!-- /demo-chrome -->
@@ -396,47 +409,504 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
 </style>
 
 <script>
+// ═══════════════════════════════════════════════
+// CANVAS BACKGROUND (same beam system as real app)
+// ═══════════════════════════════════════════════
+(function(){
+  var c = document.getElementById('synCanvas');
+  if(!c) return;
+  var ctx = c.getContext('2d');
+  var beams = [];
+  function resize(){
+    c.width = c.offsetWidth;
+    c.height = c.offsetHeight;
+  }
+  resize();
+  var cols = ['rgba(124,106,247,','rgba(232,93,150,','rgba(0,217,168,'];
+  for(var i=0;i<6;i++){
+    beams.push({
+      x: Math.random()*1400, y: Math.random()*700,
+      r: 180+Math.random()*120,
+      col: cols[i%3],
+      vx: (Math.random()-.5)*0.3,
+      vy: (Math.random()-.5)*0.3,
+      o: 0.12+Math.random()*0.1
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    beams.forEach(function(b){
+      b.x+=b.vx; b.y+=b.vy;
+      if(b.x<-b.r) b.x=c.width+b.r;
+      if(b.x>c.width+b.r) b.x=-b.r;
+      if(b.y<-b.r) b.y=c.height+b.r;
+      if(b.y>c.height+b.r) b.y=-b.r;
+      var g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      g.addColorStop(0,b.col+b.o+')');
+      g.addColorStop(1,b.col+'0)');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener('resize',resize);
+})();
+
+// ═══════════════════════════════════════════════
+// NAV / VIEW SWITCHING
+// ═══════════════════════════════════════════════
+var currentView = 'home';
+var navMap = {
+  home:     {section:'dsec-home',     title:'What\'s on your mind?', rail:'drail-home'},
+  sourcing: {section:'dsec-sourcing', title:'🏭 Sourcing Agent',     rail:'drail-source'},
+  chat:     {section:'dsec-chat',     title:'✨ AI Chat — Ava',      rail:null},
+  tools:    {section:'dsec-tools',    title:'🛠 AI Tools',           rail:'drail-tools'},
+  jobs:     {section:'dsec-jobs',     title:'🔗 Job Board',          rail:'drail-jobs'},
+  poly:     {section:'dsec-poly',     title:'🔮 Scan Polymarket',    rail:null},
+  video:    {section:'dsec-video',    title:'🎬 Video Prompts',      rail:null},
+};
+
+function demoNav(view){
+  if(!navMap[view]) return;
+  currentView = view;
+  document.querySelectorAll('.syn-section').forEach(function(s){ s.classList.remove('active'); });
+  var sec = document.getElementById(navMap[view].section);
+  if(sec) sec.classList.add('active');
+  document.getElementById('dTopTitle').textContent = navMap[view].title;
+  // Highlight icon rail
+  document.querySelectorAll('.syn-rail-btn').forEach(function(b){ b.style.background=''; });
+  if(navMap[view].rail){ var rb=document.getElementById(navMap[view].rail); if(rb) rb.style.background='rgba(124,106,247,0.12)'; }
+  document.getElementById('dExportBtn').style.display = view==='sourcing' ? '' : 'none';
+  document.getElementById('dNewBtn').textContent = view==='chat' ? '+ New Chat' : view==='sourcing' ? '+ New Search' : '+ New';
+}
+
+// ═══════════════════════════════════════════════
+// SUPPLIERS DATA (same as real app)
+// ═══════════════════════════════════════════════
+var SUPPLIERS = [
+  { name:'HangzhouTextilePro Co., Ltd', rating:'4.9 ★', reviews:'847 reviews', moq:'MOQ: 50 pcs', gsm:'GSM: 380–420', lead:'Lead: 25 days', score:'good', scoreLabel:'⭐ Strong match',
+    desc:'Specialising in premium French terry and fleece crewnecks. 390–420gsm range. 12 years experience in relaxed-fit silhouettes for European & US brands.' },
+  { name:'Guangzhou Sew & Supply Factory', rating:'4.7 ★', reviews:'1,203 reviews', moq:'MOQ: 100 pcs', gsm:'OEKO-TEX', lead:'Lead: 18 days', score:'good', scoreLabel:'⭐ Strong match',
+    desc:'Mass production specialist for knit basics. 390gsm French terry in 40+ colorways. OEM & ODM. Certified OEKO-TEX Standard 100.' },
+  { name:'ShenzhenKnit International', rating:'4.8 ★', reviews:'592 reviews', moq:'MOQ: 80 pcs', gsm:'Custom label', lead:'Lead: 30 days', score:'ok', scoreLabel:'👍 Good option',
+    desc:'Premium streetwear manufacturer. Heavyweight French terry 350–420gsm. Custom labels & packaging included.' },
+];
+
+var QUERIES = [
+  'French terry crewneck 390gsm, relaxed fit, MOQ under 100…',
+  'Heavyweight hoodie 500gsm, drop shoulder, unisex sizing…',
+  'Organic cotton tee, 220gsm, boxy fit, small MOQ…',
+];
+var STATUSES = [
+  'Opening Alibaba in browser…',
+  'Page loading…',
+  'Scanning supplier listings…',
+  'Reading product specs…',
+  'Analysing match scores…',
+  'Almost done…',
+];
+
+// ═══════════════════════════════════════════════
+// CHAT MESSAGES
+// ═══════════════════════════════════════════════
+var CHAT_CONVOS = [
+  [
+    { role:'user', text:'What\'s the best AI tool for making music right now?' },
+    { role:'ai',   text:'For full songs with vocals, Suno v4.5 is leading the pack — it has persona memory so it learns your style across sessions. If you want more production control and stems, Udio is the better pick. Both have generous free tiers.' },
+    { role:'user', text:'Which one has better genre control?' },
+    { role:'ai',   text:'Udio gives you more granular genre controls and tends to produce more distinct results per genre. Suno is faster and easier, but can sound a bit similar across different style prompts. For anything experimental or niche, go Udio.' },
+  ],
+  [
+    { role:'user', text:'Can you help me find a manufacturer for a 390gsm crewneck?' },
+    { role:'ai',   text:'Absolutely — I\'ll spin up the Sourcing Agent for that. While it searches Alibaba, tell me more: what\'s your target MOQ, and do you need OEM labeling or just blank garments?' },
+    { role:'user', text:'Under 100 pieces, OEM labels' },
+    { role:'ai',   text:'Perfect. HangzhouTextilePro and ShenzhenKnit both hit those criteria — MOQs of 50 and 80 respectively, both offer custom labels. I\'ve drafted outreach messages for both. Want to review them?' },
+  ],
+];
+
+// ═══════════════════════════════════════════════
+// AUTO-DEMO SEQUENCE
+// ═══════════════════════════════════════════════
+var demoQueryIdx = 0;
+var demoChatIdx = 0;
+
+async function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
+
+async function typeText(el, text, speed){
+  el.value = '';
+  for(var i=0;i<=text.length;i++){
+    el.value = text.slice(0,i);
+    await sleep(speed + Math.random()*20);
+  }
+}
+
+async function runSourcingScene(){
+  demoNav('sourcing');
+  await sleep(600);
+
+  var input = document.getElementById('dSrcInput');
+  var statusBar = document.getElementById('dSrcStatus');
+  var statusTxt = document.getElementById('dSrcStatusTxt');
+  var liveBadge = document.getElementById('dLiveBadge');
+  var results = document.getElementById('dSrcResults');
+
+  // Clear
+  results.innerHTML = '';
+  liveBadge.classList.remove('on');
+  statusBar.classList.remove('on');
+
+  // Type query
+  await typeText(input, QUERIES[demoQueryIdx % QUERIES.length], 50);
+  demoQueryIdx++;
+  await sleep(500);
+
+  // Show status cycling
+  statusBar.classList.add('on');
+  for(var i=0;i<STATUSES.length;i++){
+    statusTxt.textContent = STATUSES[i];
+    await sleep(900);
+  }
+  statusBar.classList.remove('on');
+  await sleep(300);
+
+  // Live badge
+  liveBadge.classList.add('on');
+  await sleep(200);
+
+  // Add supplier cards one by one
+  for(var s=0;s<SUPPLIERS.length;s++){
+    var sup = SUPPLIERS[s];
+    var card = document.createElement('div');
+    card.className = 'src-supplier-card';
+    card.innerHTML =
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px">'
+       +'<div class="src-name">'+sup.name+'</div>'
+       +'<span class="src-score '+sup.score+'">'+sup.scoreLabel+'</span>'
+      +'</div>'
+      +'<div class="src-meta"><span>'+sup.rating+'</span><span>'+sup.reviews+'</span></div>'
+      +'<div class="src-desc">'+sup.desc+'</div>'
+      +'<div class="src-tags">'
+       +'<span class="src-tag t">'+sup.moq+'</span>'
+       +'<span class="src-tag p">'+sup.gsm+'</span>'
+       +'<span class="src-tag k">'+sup.lead+'</span>'
+      +'</div>'
+      +'<div class="src-btns">'
+       +'<button class="src-msg-btn">📬 Draft outreach</button>'
+       +'<button class="src-view-btn">🔗 View listing</button>'
+       +'<button class="src-view-btn">⭐ Save</button>'
+      +'</div>';
+    results.appendChild(card);
+    await sleep(50);
+    requestAnimationFrame(function(){ card.classList.add('show'); });
+    await sleep(500);
+  }
+
+  await sleep(6000);
+}
+
+async function runChatScene(){
+  demoNav('chat');
+  var msgs = document.getElementById('dChatMsgs');
+  var empty = document.getElementById('dChatEmpty');
+  var inputEl = document.getElementById('dChatInput');
+  var convo = CHAT_CONVOS[demoChatIdx % CHAT_CONVOS.length];
+  demoChatIdx++;
+
+  // Clear previous messages (keep empty state hidden once we start)
+  msgs.innerHTML = '';
+  if(empty){ empty.style.display='none'; }
+
+  await sleep(800);
+
+  for(var m=0;m<convo.length;m++){
+    var msg = convo[m];
+    if(msg.role==='user'){
+      // Type into input
+      await typeText(inputEl, msg.text, 45);
+      await sleep(400);
+      // Create bubble
+      var g = document.createElement('div');
+      g.className = 'syn-msg-group';
+      g.style.justifyContent = 'flex-end';
+      g.innerHTML = '<div class="syn-msg-bubble" style="background:rgba(124,106,247,0.15);border-color:rgba(124,106,247,0.25)">'+msg.text+'</div>';
+      msgs.appendChild(g);
+      inputEl.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+      await sleep(600);
+    } else {
+      // AI typing indicator
+      var typ = document.createElement('div');
+      typ.className = 'syn-msg-group';
+      typ.innerHTML = '<div class="syn-msg-avatar ai">A</div><div class="syn-msg-bubble" style="color:rgba(255,255,255,0.4)"><span class="tcursor"></span></div>';
+      msgs.appendChild(typ);
+      msgs.scrollTop = msgs.scrollHeight;
+      await sleep(1200 + msg.text.length*8);
+      // Replace with real message
+      typ.querySelector('.syn-msg-bubble').innerHTML = msg.text;
+      typ.querySelector('.syn-msg-bubble').style.color = '';
+      msgs.scrollTop = msgs.scrollHeight;
+      await sleep(800);
+    }
+  }
+  await sleep(4000);
+}
+
+async function runToolsScene(){
+  demoNav('tools');
+  // Animate tab switching
+  var tabs = document.querySelectorAll('.syn-cat-tab');
+  var order = [1,2,3,0]; // music, video, image, all
+  for(var t=0;t<order.length;t++){
+    tabs.forEach(function(tb){ tb.classList.remove('active'); });
+    tabs[order[t]].classList.add('active');
+    await sleep(1500);
+  }
+  await sleep(1000);
+}
+
+async function runJobsScene(){
+  demoNav('jobs');
+  await sleep(4000);
+}
+
+// ── Voice bar animation ──────────────────────────────────
+var _voiceBarRaf = null;
+function startVoiceBars(speaking){
+  var bars = document.querySelectorAll('.dv-bar');
+  var halo = document.getElementById('dVoiceHalo');
+  if(halo) halo.style.display = speaking ? 'block' : 'none';
+  if(_voiceBarRaf){ cancelAnimationFrame(_voiceBarRaf); _voiceBarRaf=null; }
+  if(!speaking){
+    bars.forEach(function(b){ b.style.height='4px'; b.style.background='rgba(124,106,247,0.3)'; });
+    return;
+  }
+  function frame(){
+    bars.forEach(function(b){
+      var h = speaking ? (4 + Math.random()*24) : 4;
+      b.style.height = h+'px';
+      b.style.background = 'rgba(124,106,247,'+(0.5+Math.random()*0.5)+')';
+    });
+    _voiceBarRaf = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+async function voiceSpeak(label, reply, ms){
+  var lbl = document.getElementById('dVoiceLabel');
+  var rep = document.getElementById('dVoiceReply');
+  var core = document.getElementById('dVoiceCore');
+  if(lbl) lbl.textContent = label;
+  if(rep){ rep.style.display='none'; rep.textContent=''; }
+  // Glow up orb
+  if(core) core.style.boxShadow='0 0 50px rgba(124,106,247,0.9),0 0 100px rgba(124,106,247,0.4)';
+  startVoiceBars(true);
+  await sleep(ms || 2000);
+  startVoiceBars(false);
+  if(core) core.style.boxShadow='0 0 30px rgba(124,106,247,0.6),0 0 60px rgba(124,106,247,0.25)';
+  if(reply && rep){
+    rep.style.display='block';
+    // stream reply text
+    rep.textContent='';
+    for(var i=0;i<reply.length;i++){
+      rep.textContent+=reply[i];
+      await sleep(18);
+    }
+  }
+}
+
+async function runVoiceScene(){
+  demoNav('home');
+  await sleep(1000);
+
+  var overlay = document.getElementById('dVoiceOverlay');
+  var toast = document.getElementById('dVoiceToast');
+  var label = document.getElementById('dVoiceLabel');
+  var rep = document.getElementById('dVoiceReply');
+
+  // Show voice overlay
+  overlay.style.display='flex';
+  toast.style.display='none';
+  if(rep) rep.style.display='none';
+  await sleep(600);
+
+  // 1 — AI greets
+  await voiceSpeak('🤖 Ava is speaking…', 'Hey! I\'m Ava. Ask me anything, or just talk — I\'m listening.', 2200);
+  await sleep(1000);
+
+  // 2 — User says "save a note"
+  if(label) label.textContent='🎙 You: "Save a note — call the supplier tomorrow"';
+  startVoiceBars(true);
+  await sleep(2000);
+  startVoiceBars(false);
+  await sleep(400);
+
+  // AI confirms + note toast
+  await voiceSpeak('🤖 Ava: Got it, saving that now…', null, 1400);
+  toast.style.display='block';
+  await sleep(1800);
+  toast.style.display='none';
+  if(rep) rep.style.display='none';
+  await sleep(600);
+
+  // 3 — User says "open sourcing agent"
+  if(label) label.textContent='🎙 You: "Open the sourcing agent"';
+  startVoiceBars(true);
+  await sleep(1800);
+  startVoiceBars(false);
+  await sleep(400);
+
+  await voiceSpeak('🤖 Ava: Opening sourcing agent for you…', null, 1200);
+  await sleep(500);
+
+  // close overlay + navigate
+  overlay.style.display='none';
+  startVoiceBars(false);
+}
+
+async function runPolyScene(){
+  demoNav('poly');
+  var results = document.getElementById('dPolyResults');
+  results.innerHTML='';
+  await sleep(600);
+
+  var markets = [
+    {q:'Will BTC hit $120k before end of 2025?', yes:'67%', no:'33%', vol:'$2.4M', trend:'↑ trending'},
+    {q:'Will the Fed cut rates in Q3 2025?', yes:'54%', no:'46%', vol:'$1.1M', trend:'→ flat'},
+    {q:'Will OpenAI release GPT-5 this year?', yes:'81%', no:'19%', vol:'$890k', trend:'↑ trending'},
+  ];
+
+  for(var i=0;i<markets.length;i++){
+    var m = markets[i];
+    var card = document.createElement('div');
+    card.style.cssText='background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s';
+    card.innerHTML='<div style="font-size:12.5px;color:rgba(255,255,255,0.85);font-weight:600;margin-bottom:8px">'+m.q+'</div>'
+      +'<div style="display:flex;gap:8px;margin-bottom:8px">'
+      +'<div style="flex:1;background:rgba(0,217,168,0.12);border-radius:6px;padding:6px 10px;text-align:center"><div style="font-size:16px;font-weight:700;color:#00d9a8">'+m.yes+'</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px">YES</div></div>'
+      +'<div style="flex:1;background:rgba(232,93,150,0.1);border-radius:6px;padding:6px 10px;text-align:center"><div style="font-size:16px;font-weight:700;color:#e85d96">'+m.no+'</div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:1px">NO</div></div>'
+      +'</div>'
+      +'<div style="display:flex;justify-content:space-between;font-size:10.5px;color:rgba(255,255,255,0.3)">'
+      +'<span>Vol: '+m.vol+'</span><span style="color:rgba(0,217,168,0.7)">'+m.trend+'</span></div>';
+    results.appendChild(card);
+    await sleep(80);
+    requestAnimationFrame(function(c){ return function(){ c.style.opacity='1'; c.style.transform='translateY(0)'; }; }(card));
+    await sleep(600);
+  }
+  await sleep(4000);
+}
+
+async function runVideoScene(){
+  demoNav('video');
+  var inp = document.getElementById('dVideoInput');
+  var results = document.getElementById('dVideoResults');
+  results.innerHTML='';
+  await sleep(500);
+
+  await typeText(inp, 'cinematic drone shot over a neon-lit Tokyo street at 2am', 45);
+  await sleep(600);
+
+  var prompts = [
+    {style:'Runway Gen-4', prompt:'Ultra-wide drone descends over rain-slicked Shibuya crossing, 2AM. Neon signs bleed colour into wet asphalt. Cinematic anamorphic lens flare. 4K, slow motion 120fps.'},
+    {style:'Kling v1.6', prompt:'Low-angle tracking shot following a lone figure through a narrow alley. Paper lanterns sway. Shallow depth of field. Moody, desaturated except for warm amber street lamps.'},
+  ];
+
+  for(var i=0;i<prompts.length;i++){
+    var p = prompts[i];
+    var card = document.createElement('div');
+    card.style.cssText='background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s';
+    card.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+      +'<span style="font-size:10px;padding:2px 8px;background:rgba(124,106,247,0.12);border:1px solid rgba(124,106,247,0.25);border-radius:20px;color:rgba(180,172,255,0.9)">'+p.style+'</span>'
+      +'</div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6">'+p.prompt+'</div>'
+      +'<div style="display:flex;gap:6px;margin-top:10px">'
+      +'<button style="background:rgba(124,106,247,0.12);border:1px solid rgba(124,106,247,0.25);border-radius:7px;padding:5px 11px;font-size:11px;color:rgba(180,172,255,0.9);cursor:pointer;font-family:inherit">📋 Copy</button>'
+      +'<button style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:5px 11px;font-size:11px;color:#6b6b8a;cursor:pointer;font-family:inherit">🔄 Regenerate</button>'
+      +'</div>';
+    results.appendChild(card);
+    await sleep(80);
+    requestAnimationFrame(function(c){ return function(){ c.style.opacity='1'; c.style.transform='translateY(0)'; }; }(card));
+    await sleep(700);
+  }
+  await sleep(4000);
+}
+
+async function runHomeScene(){
+  demoNav('home');
+  await sleep(1500);
+}
+
+async function demoLoop(){
+  while(true){
+    await runVoiceScene();       // 1. Voice — the hero feature
+    await runSourcingScene();    // 2. Sourcing agent
+    await runPolyScene();        // 3. Polymarket scanner
+    await runVideoScene();       // 4. Video prompts
+    await runChatScene();        // 5. LLM chat
+    await runToolsScene();       // 6. Tools directory
+    await runJobsScene();        // 7. Job board
+  }
+}
+
+// demoLoop disabled — iframe startDemo() handles all demo sequencing
+
+// ═══════════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════════
+var ro = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(function(el){ ro.observe(el); });
+
+// Nav scroll
+window.addEventListener('scroll',function(){
+  document.getElementById('lpNav').style.background =
+    window.scrollY>20 ? 'rgba(10,10,15,0.97)' : 'rgba(10,10,15,0.8)';
+});
+
+// Tool card tab interaction
+document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
+  tab.addEventListener('click', function(){
+    document.querySelectorAll('.syn-cat-tab').forEach(function(t){ t.classList.remove('active'); });
+    tab.classList.add('active');
+  });
+});
+</script>
+
+<script>
 (function(){
   var iframe = document.getElementById('synIframe');
   var fallback = document.getElementById('synFallback');
   if (!iframe) return;
 
-  // Show fallback if file:// protocol (no server)
+  var _demoStarted = false;
+  function _kickDemo() {
+    if (_demoStarted) return;
+    _demoStarted = true;
+    setTimeout(function(){ send('init-demo'); }, 1500);
+    setTimeout(startDemo, 2500);
+  }
+
   var fallbackTimer = setTimeout(function(){
-    if (window.location.protocol === 'file:') {
-      fallback.style.display = 'flex';
-      iframe.style.display = 'none';
-    }
+    // Iframe loaded (Chrome allows local file iframes) — just kick the demo
+    _kickDemo();
   }, 3000);
 
   iframe.addEventListener('load', function(){
     clearTimeout(fallbackTimer);
     fallback.style.display = 'none';
     iframe.style.display = 'block';
-    // Start demo 2s after app has loaded
-    setTimeout(startDemo, 2000);
+    _kickDemo();
   });
 
-  iframe.addEventListener('error', function(){
-    clearTimeout(fallbackTimer);
-    fallback.style.display = 'flex';
-    iframe.style.display = 'none';
-  });
-
-  // Stop demo when user interacts with iframe directly
   iframe.addEventListener('mouseenter', function(){ _demoPaused = true; });
   iframe.addEventListener('mouseleave', function(){ _demoPaused = false; });
 
-  // ── Send a command to the iframe ──
   function send(action, target, duration) {
     iframe.contentWindow.postMessage({ src:'synapses-demo', action:action, target:target, duration:duration }, '*');
   }
 
-  // ── Helpers ──
   var _demoPaused = false;
-  function wait(ms) {
-    return new Promise(function(res){ setTimeout(res, ms); });
-  }
+  function wait(ms) { return new Promise(function(res){ setTimeout(res, ms); }); }
   async function step(action, target, dur, pauseAfter) {
     if (_demoPaused) await waitForResume();
     send(action, target, dur || 1800);
@@ -448,53 +918,35 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
     });
   }
 
-  // ── The demo sequence ──
-  async function startDemo() {
-
-    // ── SCENE 1: Home — hover nav icons to show tooltips ──
-    send('nav', 'home');
-    await wait(1500);
-    var navItems = ['nav-hub','nav-human','nav-room','nav-jobs','nav-world'];
-    for (var i = 0; i < navItems.length; i++) {
-      await step('tooltip', navItems[i], 1400, 1700);
+  // Listen for restart-voice signal from iframe (user returned to chat)
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.src === 'synapses-demo' && e.data.action === 'restart-voice') {
+      clearTimeout(window._voiceRestartTimer);
+      window._voiceRestartTimer = setTimeout(function(){
+        send('show-topbar');
+        setTimeout(function(){ send('demo-voice'); }, 1200);
+      }, 300);
     }
+  });
 
-    // ── SCENE 2: Speech to speech ──
-    await wait(500);
-    send('voice');
-    await wait(6000); // let it sit — Ava portrait flashes, mic active
-
-    // ── SCENE 3: SYN-BOT ──
-    send('voiceoff');
-    await wait(1200);
-    send('robot');
-    await wait(6000); // panel open, message sent, response streaming
-
-    // ── SCENE 4: Close synbot, go through sections ──
-    send('robotclose');
-    await wait(800);
-
-    send('nav', 'tools');
-    await wait(3500);
-
-    send('nav', 'jobs');
-    await wait(3500);
-
-    send('nav', 'hub');
-    await wait(3500);
-
-    send('nav', 'human');
-    await wait(4000);
-
-    send('nav', 'world');
-    await wait(3500);
-
+  async function startDemo() {
+    // Always start on chat page ("What's on your mind")
     send('nav', 'chat');
-    await wait(3000);
-
-    // Loop
-    send('nav', 'home');
     await wait(1500);
+    // 1. Voice scene — show topbar, trigger demo voice in iframe, hide after
+    send('show-topbar');
+    await wait(1200);
+    send('demo-voice');
+    await wait(28000);
+    send('hide-topbar');
+    await wait(600);
+    send('nav', 'tools');          await wait(3000);
+    send('nav', 'jobs');           await wait(3000);
+    send('nav', 'hub');            await wait(3000);
+    send('human-landing');         await wait(5000);
+    send('human-skip');            await wait(2500);
+    send('nav', 'world');          await wait(3000);
+    send('nav', 'chat');           await wait(2500);
     startDemo();
   }
 })();

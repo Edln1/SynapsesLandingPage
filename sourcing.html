@@ -1871,6 +1871,8 @@ to{opacity:0;transform:translateX(-40px);}}
           // Restore persisted data BEFORE booting app — fixes login/sidebar race condition
           function bootApp(){
             try{
+              // In demo mode, never restore a session
+              if(typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY'){ if(typeof window._hideSplash==='function') window._hideSplash(); return; }
               var sv = localStorage.getItem('synapses_session');
               if(sv){
                 var s = JSON.parse(sv);
@@ -3698,7 +3700,7 @@ window.getWebAudioNode = getWebAudioNode;
     <div class="top-actions" style="padding-right:148px;">
       <div id="topBarDynBtns" style="display:flex;align-items:center;gap:4px;"></div>
       <!-- Global voice activity button -->
-      <button id="topNavVoiceBtn" onclick="if(_currentViewId==='sec-chat'){ toggleTopNavVoice(); } else { setView('sec-chat'); }" title="Voice activity" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(99,102,195,0.3);background:transparent;cursor:pointer;flex-shrink:0;padding:0;transition:border-color .25s,background .25s,box-shadow .25s;color:rgba(160,165,220,0.5);margin-right:2px;">
+      <button id="topNavVoiceBtn" onclick="toggleTopNavVoice();" title="Voice activity" style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(99,102,195,0.3);background:transparent;cursor:pointer;flex-shrink:0;padding:0;transition:border-color .25s,background .25s,box-shadow .25s;color:rgba(160,165,220,0.5);margin-right:2px;">
         <svg id="tnvMicIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -4910,6 +4912,8 @@ var _custDragId = null;
 
 function loadNavConfig(){
   try{
+    // In demo mode, nav is already forced to bottom fullwidth — skip restore
+    if (GROQ_KEYS && GROQ_KEYS[0] === 'DEMO_KEY') return;
     var saved=localStorage.getItem('synapses_navConfig');
     if(saved){
       var cfg=JSON.parse(saved);
@@ -5292,6 +5296,7 @@ sf.classList.add('sb-hidden');setTimeout(function(){sf.style.display='none';ir.s
 var allJobs=[],currentUser=null,jobFilter='all';
 (function(){
   function showAuthModal(){
+    if(typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY') return;
     window.addEventListener('DOMContentLoaded',function(){
       if(typeof window._hideSplash==='function') setTimeout(window._hideSplash,400);
       var m=document.getElementById('authModal');
@@ -5301,6 +5306,7 @@ var allJobs=[],currentUser=null,jobFilter='all';
     });
   }
   try{
+    if(typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY') throw 'demo';
     var sv=localStorage.getItem('synapses_session');
     if(sv){
       var s=JSON.parse(sv);
@@ -5351,7 +5357,22 @@ var allJobs=[],currentUser=null,jobFilter='all';
       }
     }
   }catch(e){}
-  showAuthModal();
+  // In demo mode, never show auth modal
+  if(typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY'){
+    // Hide immediately via CSS so it never flashes
+    var _demoStyle=document.createElement('style');
+    _demoStyle.textContent='#authModal{display:none!important;}';
+    document.head.appendChild(_demoStyle);
+    window.addEventListener('DOMContentLoaded',function(){
+      var m=document.getElementById('authModal');
+      if(m) m.style.display='none';
+      if(typeof window._hideSplash==='function') window._hideSplash();
+      // Wait for app init before navigating home
+      setTimeout(function(){ if(typeof goHome==='function') goHome(); },300);
+    });
+  } else {
+    showAuthModal();
+  }
 })();
 var chatHistory=[],isSending=false,isCoachHubSending=false;
 var _chatAbortCtrl = null; // AbortController for the current LLM stream
@@ -5606,7 +5627,7 @@ function doGuest(){try{var sv=localStorage.getItem('synapses_session');if(sv){va
 function switchAuthTab(t){document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabRegister').classList.toggle('active',t==='register');document.getElementById('loginForm').style.display=t==='login'?'block':'none';document.getElementById('registerForm').style.display=t==='register'?'block':'none';}
 function doLogin(){var email=document.getElementById('loginEmail').value.trim().toLowerCase(),pass=document.getElementById('loginPass').value,err=document.getElementById('loginErr');if(!email||!pass){showErr(err,'Please fill in all fields.');return;}showErr(err,'Signing in...');_supabase.auth.signInWithPassword({email:email,password:pass}).then(function(r){if(r.error){showErr(err,r.error.message);return;}_supabase.from('profiles').select('*').eq('id',r.data.user.id).single().then(function(pr){var p=pr.data||{};var _lp=null;try{_lp=localStorage.getItem('synapses_postmedia_'+r.data.user.email);}catch(_e){}currentUser={id:r.data.user.id,email:r.data.user.email,name:p.name||r.data.user.email.split('@')[0],roles:p.role?[p.role]:['seeker'],color:p.color||'#6366f1',initial:(p.name||r.data.user.email)[0].toUpperCase(),avatar:p.avatar_url||null,coverVideo:p.cover_video_url||null,postMediaPref:_lp||(p.post_media_pref||'photo')};if(p.avatar_url)localStorage.setItem('synapses_avatar_'+r.data.user.email,p.avatar_url);if(p.cover_video_url)localStorage.setItem('synapses_cover_'+r.data.user.email,p.cover_video_url);document.getElementById('authModal').style.display='none';onLogin();});});}
 function doRegister(){var name=document.getElementById('regName').value.trim(),email=document.getElementById('regEmail').value.trim().toLowerCase(),pass=document.getElementById('regPass').value,err=document.getElementById('registerErr');if(!name||!email||!pass){showErr(err,'Please fill in all fields.');return;}if(pass.length<6){showErr(err,'Min 6 characters.');return;}if(!/\S+@\S+\.\S+/.test(email)){showErr(err,'Valid email required.');return;}showErr(err,'Creating account...');_supabase.auth.signUp({email:email,password:pass}).then(function(r){if(r.error){showErr(err,r.error.message);return;}var roles=[...selectedRoles];_supabase.from('profiles').insert({id:r.data.user.id,email:email,name:name,role:roles[0]||'seeker',color:'#6366f1'}).then(function(){currentUser={id:r.data.user.id,email:email,name:name,roles:roles,color:'#6366f1',initial:name[0].toUpperCase()};document.getElementById('authModal').style.display='none';onLogin();});});}
-function logout(){_supabase.auth.signOut().then(function(){try{localStorage.removeItem('synapses_session');}catch(e){}currentUser=null;chatHistory=[];allJobs=[];recentChats=[];savedChats=[];chatSessions={};feedPosts=[];socialPosts=[];_feedLoaded=false;_feedFetching=false;_avatarCache={};
+function logout(){if(typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY') return; _supabase.auth.signOut().then(function(){try{localStorage.removeItem('synapses_session');}catch(e){}currentUser=null;chatHistory=[];allJobs=[];recentChats=[];savedChats=[];chatSessions={};feedPosts=[];socialPosts=[];_feedLoaded=false;_feedFetching=false;_avatarCache={};
 // Clear video banner and avatar so old account's media doesn't show for next user
 var vid=document.getElementById('feedProfileCoverVideo');if(vid){vid.src='';vid.style.display='none';}
 var fav=document.getElementById('feedProfileAv');if(fav){fav.style.backgroundImage='';fav.style.background='linear-gradient(135deg,#6366f1,#4f46e5)';fav.textContent='?';}
@@ -5617,7 +5638,7 @@ function getRoles(u){return u?u.roles||['seeker']:[];}
 function canSeek(u){return getRoles(u).includes('seeker');}
 function canRecruit(u){return getRoles(u).includes('recruiter');}
 function getRoleLabel(u){var r=getRoles(u);return r.includes('seeker')&&r.includes('recruiter')?'🔍 Seeker & 🏢 Recruiter':r.includes('recruiter')?'🏢 Recruiter':'🔍 Job Seeker';}
-function onLogin(){window._loginDone=true;loadPersistedChats();if(currentUser&&currentUser.email&&!currentUser.isGuest){setTimeout(function(){syncWhatsAppNotes(currentUser.email);startWhatsAppNotePolling(currentUser.email);},1500);}if(typeof window._hideSplash==='function')window._hideSplash();try{localStorage.setItem('synapses_session',JSON.stringify(currentUser));}catch(e){} nlSave(); chatHistory=[];activeSession=null;document.getElementById('sbName').textContent=currentUser.name;document.getElementById('sbRole').textContent=getRoleLabel(currentUser);// Avatar already populated from DB in doLogin; cache it locally for preload
+function onLogin(){if(!currentUser||( typeof GROQ_KEYS!=='undefined'&&GROQ_KEYS[0]==='DEMO_KEY'))return;window._loginDone=true;loadPersistedChats();if(currentUser&&currentUser.email&&!currentUser.isGuest){setTimeout(function(){syncWhatsAppNotes(currentUser.email);startWhatsAppNotePolling(currentUser.email);},1500);}if(typeof window._hideSplash==='function')window._hideSplash();try{localStorage.setItem('synapses_session',JSON.stringify(currentUser));}catch(e){} nlSave(); chatHistory=[];activeSession=null;document.getElementById('sbName').textContent=currentUser.name;document.getElementById('sbRole').textContent=getRoleLabel(currentUser);// Avatar already populated from DB in doLogin; cache it locally for preload
 if(currentUser.avatar)try{localStorage.setItem('synapses_avatar_'+currentUser.email,currentUser.avatar);}catch(e){}
 // Avatar is already loaded from Supabase in doLogin — apply it immediately
 applyAvatar(currentUser.avatar||null);
@@ -5727,6 +5748,13 @@ function triggerNavGlow(btn){
       var t=setTimeout(function(){
         b.classList.remove('nav-glow');
         b.classList.add('nav-glow-hold');
+        // Always remove nav-glow-hold after 2.5s so it never gets stuck
+        var t3=setTimeout(function(){
+          b.classList.remove('nav-glow-hold');
+          b.style.boxShadow='';
+          b.style.animation='';
+        },2500);
+        _navGlowTimers.push(t3);
       },420);
       _navGlowTimers.push(t);
     } else {
@@ -8792,6 +8820,7 @@ var _stickySlots = [
 function runStickyNoteLaser(el){ /* removed */ }
 
 window._stickyNotesVisible = localStorage.getItem('notesVisible') !== '0';
+// In demo mode this is already forced false by the bootstrap above
 
 function _ensureNotesToggleBtn() {
   var btn = document.getElementById('notesToggleBtn');
@@ -8889,6 +8918,8 @@ function _drawRtBubbleOutline(){
 }
 
 function renderStickyNotes(laserOnNew){
+  // In demo mode, never render real notes — layer is managed by _injectDemoNote
+  if (typeof GROQ_KEYS !== 'undefined' && GROQ_KEYS[0] === 'DEMO_KEY') return;
   var layer = document.getElementById('stickyNotesLayer');
   if(!layer) return;
   // Read fresh from storage but don't overwrite in-memory userNotes (avoids race with saveNote)
@@ -10945,6 +10976,54 @@ var GROQ_KEYS = [
 var _groqKeyIndex = Math.floor(Math.random() * 1000);
 function getGroqKey(){ return GROQ_KEYS[_groqKeyIndex % GROQ_KEYS.length]; }
 function nextGroqKey(){ _groqKeyIndex++; console.warn('Switching to Groq key '+((_groqKeyIndex)%GROQ_KEYS.length+1)); }
+
+// ── DEMO MODE BOOTSTRAP — runs immediately, before any localStorage restore ──
+(function(){
+  if (GROQ_KEYS[0] !== 'DEMO_KEY') return;
+
+  // 1. Force bottom-nav immediately so sidebar never flashes
+  document.body.classList.add('bottom-nav', 'nav-fullwidth');
+  // Mark login as done so beam animation never starts
+  window._loginDone = true;
+  // Hide auth modal via CSS immediately — belt and suspenders
+  var _dmStyle = document.createElement('style');
+  _dmStyle.textContent = '#authModal{display:none!important;pointer-events:none!important;}';
+  (document.head||document.documentElement).appendChild(_dmStyle);
+  // Also override the element's inline style as soon as DOM exists
+  window.addEventListener('DOMContentLoaded', function(){
+    var _am = document.getElementById('authModal');
+    if (_am) { _am.style.cssText += ';display:none!important;'; }
+  });
+  // Apply fullwidth bar once DOM is ready
+  document.addEventListener('DOMContentLoaded', function(){
+    var bar = document.getElementById('bottomNavBar');
+    if (bar) { bar.classList.add('fullwidth'); }
+    // Also re-apply in case initBnavDrag needs it
+    document.body.classList.add('bottom-nav', 'nav-fullwidth');
+    // Set nav state vars and init drag
+    window._navAtBottom = true;
+    window._navFullwidth = true;
+    if (typeof initBnavDrag === 'function') { try { initBnavDrag(); } catch(e){} }
+    var btn = document.getElementById('bnavExpandBtn');
+    if (btn) { btn.textContent = '⊠'; btn.title = 'Collapse to pill'; }
+  });
+
+  // 2. Force notes hidden — override before _stickyNotesVisible reads localStorage
+  window._stickyNotesVisible = false;
+
+  // 3. Sign out — clear all auth so no logged-in notes/data leaks through
+  try {
+    // Stub supabase signOut if it exists
+    if (window.supabase && window.supabase.auth) {
+      window.supabase.auth.signOut().catch(function(){});
+    }
+    window.currentUser = null;
+    // Clear auth-related localStorage keys only
+    ['synapses_user','synapses_session','supabase.auth.token','synapses_notes','sb-access-token','sb-refresh-token'].forEach(function(k){
+      try { localStorage.removeItem(k); } catch(e){}
+    });
+  } catch(e){}
+})();
 
 var _skipDelay = false;
 
@@ -25950,6 +26029,15 @@ function speakVoiceReply(text) {
   };
   window._clearCompanionMemory = function() { localStorage.removeItem(_memKey); _history = []; };
   window.toggleTopNavVoice = function() {
+    // Demo mode: always stop any running demo then restart fresh
+    if (typeof GROQ_KEYS !== 'undefined' && GROQ_KEYS[0] === 'DEMO_KEY') {
+      if (window._demoVoiceToken) { window._demoVoiceToken.cancelled = true; window._demoVoiceToken = null; }
+      stopAll();
+      setTimeout(function(){
+        if (typeof window._demoVoiceStart === 'function') window._demoVoiceStart();
+      }, 200);
+      return;
+    }
     _on = !_on;
     window._topNavVoiceActive = _on;
     if (_on) {
@@ -25962,21 +26050,213 @@ function speakVoiceReply(text) {
         if (typeof _vmActive !== 'undefined' && _vmActive && typeof closeVoiceMode === 'function') { closeVoiceMode(); }
         record();
       } else {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function(s) {
-          _stream = s;
-          // Permission granted — now safe to turn off TTS
-          if (typeof _vmActive !== 'undefined' && _vmActive && typeof closeVoiceMode === 'function') { closeVoiceMode(); }
-          record();
-        }).catch(function() {
-          toast('Mic access denied');
-          _on = false;
-          window._topNavVoiceActive = false;
-        });
+        // Demo mode: run the visual demo sequence
+        if (typeof GROQ_KEYS !== 'undefined' && GROQ_KEYS[0] === 'DEMO_KEY') {
+          _on = false; window._topNavVoiceActive = false; // reset so demoVoiceStart sets it
+          if (typeof window._demoVoiceStart === 'function') {
+            window._demoVoiceStart();
+          }
+        } else {
+          navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(function(s) {
+            _stream = s;
+            if (typeof _vmActive !== 'undefined' && _vmActive && typeof closeVoiceMode === 'function') { closeVoiceMode(); }
+            record();
+          }).catch(function() {
+            toast('Mic access denied');
+            _on = false;
+            window._topNavVoiceActive = false;
+          });
+        }
       }
     } else {
       stopAll();
     }
   };
+
+  // ── Demo voice: two-round sequence without real mic/API ─────────────────────
+  function _runDemoSpeakAnim(replyText, onDone) {
+    try {
+      var wave = document.getElementById('tnvWaveIcon');
+      if (!wave) { if (onDone) onDone(); return; }
+      wave.classList.remove('tnv-breathe');
+      if (_wsAnalyserRaf) { cancelAnimationFrame(_wsAnalyserRaf); _wsAnalyserRaf = null; }
+      var bars       = wave.querySelectorAll('.tnv-bar');
+      var mouthShape = [0.25,0.55,0.9,1.0,0.9,0.55,0.25];
+      var mouthRest  = [2.0,3.2,4.5,5.2,4.5,3.2,2.0];
+      var lag        = [0.75,0.88,0.98,1.0,0.98,0.88,0.75];
+      var noise      = [0,0,0,0,0,0,0];
+      var cur        = mouthRest.slice();
+      var glowBlur   = document.getElementById('tnvGlowBlur');
+      var barsGroup  = document.getElementById('tnvBarsGroup');
+      var speakDur   = replyText.length * 55 + 1200;
+      var speakStart = Date.now();
+      var dRaf;
+      (function frame() {
+        var elapsed = Date.now() - speakStart;
+        var t = elapsed / speakDur;
+        var env = t < 0.1 ? t/0.1 : t > 0.85 ? (1-t)/0.15 : 1;
+        var energy = env * (0.4 + 0.45 * Math.abs(Math.sin(elapsed / 110)));
+        var speaking = energy > 0.03;
+        if (glowBlur) glowBlur.setAttribute('stdDeviation', (0.5 + energy * 3).toFixed(2));
+        var r = Math.round(34  + energy * (167-34));
+        var g = Math.round(211 + energy * (139-211));
+        var b = Math.round(238 + energy * (250-238));
+        if (barsGroup) barsGroup.setAttribute('fill','rgb('+r+','+g+','+b+')');
+        bars.forEach(function(bar,i){
+          noise[i] += (Math.random()-0.5)*0.15; noise[i]*=0.85;
+          var maxOpen = 2 + mouthShape[i]*22;
+          var target = speaking ? mouthRest[i]+energy*(maxOpen-mouthRest[i])+noise[i] : mouthRest[i]+noise[i]*0.3;
+          cur[i] += (target-cur[i])*(speaking ? lag[i] : 0.05);
+          var h = Math.max(0.5,cur[i]);
+          bar.setAttribute('height',h.toFixed(2));
+          bar.setAttribute('y',(10-h/2).toFixed(2));
+        });
+        if (elapsed < speakDur && _on) { dRaf = requestAnimationFrame(frame); }
+        else { cancelAnimationFrame(dRaf); if (onDone) onDone(); }
+      })();
+    } catch(e) { if (onDone) onDone(); }
+  }
+
+  function _injectDemoNote() {
+    try {
+      var layer = document.getElementById('stickyNotesLayer');
+      if (!layer) return;
+      // Wipe any real notes first
+      layer.innerHTML = '';
+      // Build and append the fake card before toggling so it's ready when layer fades in
+      var col = {
+        bg:'rgba(0,217,168,0.12)',
+        border:'rgba(0,217,168,0.50)',
+        pin:'#00d9a8',
+        glow:'rgba(0,217,168,0.30)',
+        text:'#b0fff0',
+        muted:'rgba(0,217,168,0.45)'
+      };
+      var d = new Date();
+      var mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var dateStr = mon[d.getMonth()] + ' ' + d.getDate();
+
+      var wrapper = document.createElement('div');
+      wrapper.id = '_demoNoteCard';
+      wrapper.style.cssText =
+        'position:absolute;right:14px;top:22px;width:165px;' +
+        'border-radius:12px;padding:1px;z-index:99;pointer-events:auto;cursor:grab;' +
+        'background:linear-gradient(135deg,'+col.border+' 0%,transparent 60%);' +
+        'box-shadow:0 0 18px '+col.glow+',0 4px 16px rgba(0,0,0,0.45);' +
+        'opacity:0;transform:translateY(-8px) scale(0.95);' +
+        'transition:opacity 0.35s ease,transform 0.35s ease;';
+
+      wrapper.innerHTML =
+        '<div style="background:'+col.bg+';border:1px solid '+col.border+';border-radius:11px;padding:10px 11px 11px;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
+            '<span style="font-size:9.5px;color:'+col.muted+';font-family:DM Sans,sans-serif;">'+dateStr+'</span>' +
+            '<svg width="9" height="9" viewBox="0 0 24 24" fill="'+col.pin+'" style="flex-shrink:0;"><circle cx="12" cy="8" r="4"/><line x1="12" y1="12" x2="12" y2="20" stroke="'+col.pin+'" stroke-width="2.5" stroke-linecap="round"/></svg>' +
+          '</div>' +
+          '<div style="font-size:11px;font-weight:600;color:'+col.text+';font-family:Syne,sans-serif;margin-bottom:6px;line-height:1.3;">Candidate Shortlist</div>' +
+          '<div style="font-size:10px;color:'+col.text+';font-family:DM Sans,sans-serif;line-height:1.6;opacity:0.85;">' +
+            '14 strong matches<br>' +
+            '&#x2022; 3 open to work<br>' +
+            '&#x2022; 2 from Series B<br>' +
+            '&#x2022; Avg 6 yrs exp' +
+          '</div>' +
+        '</div>';
+
+      layer.appendChild(wrapper);
+      // Ensure state is hidden first so toggle flips it ON with proper animation
+      window._stickyNotesVisible = false;
+      if (typeof toggleStickyNotes === 'function') toggleStickyNotes();
+      // Animate card in after layer fades in
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          wrapper.style.opacity = '1';
+          wrapper.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+    } catch(e) {}
+  }
+
+  window._demoNoteCleanup = function() {
+    var old = document.getElementById('_demoNoteCard');
+    if (old) { old.style.opacity = '0'; setTimeout(function(){ old.parentNode && old.parentNode.removeChild(old); }, 350); }
+  };
+
+  window._demoVoiceStart = function() {
+    // Cancel any previous run
+    if (window._demoVoiceToken) {
+      window._demoVoiceToken.cancelled = true;
+      window._demoVoiceToken = null;
+    }
+    var token = { cancelled: false };
+    window._demoVoiceToken = token;
+
+    function guard(fn) {
+      return function() { if (!token.cancelled) fn.apply(this, arguments); };
+    }
+
+    _on = true;
+    window._topNavVoiceActive = true;
+
+    var r1User  = 'Find me top candidates for a senior engineer role';
+    var r1Reply = 'On it! Scanning 2.4 million profiles\u2026 Found 14 strong matches — 3 open to work, 2 from Series B companies, averaging 6 years exp with strong TypeScript and system design.';
+    var r2User  = 'Save that as a note';
+    var r2Reply = 'Done! Saved as \u201CCandidate Shortlist\u201D in your quick notes.';
+
+    var r1Dur = r1Reply.length * 55 + 1200;
+
+    // ── Round 1 ───────────────────────────────────────────────────────────────
+    setTimeout(guard(function() {
+      btnState('listen');
+      var _toastEl = document.getElementById('tnvToast');
+      if (!_toastEl) { _toastEl = document.createElement('div'); _toastEl.id = 'tnvToast'; document.body.appendChild(_toastEl); }
+      // Wait for topbar transition to fully settle before showing toast
+      setTimeout(guard(function() {
+        toast('\uD83C\uDF99 Listening\u2026');
+        requestAnimationFrame(function() {
+          if (token.cancelled) return;
+          var t = document.getElementById('tnvToast');
+          var btn = document.getElementById('topNavVoiceBtn');
+          if (t && btn) {
+            var r = btn.getBoundingClientRect();
+            if (r.top === 0 && r.left === 0) {
+              t.style.top = '70px'; t.style.left = '50%'; t.style.transform = 'translateX(-50%)';
+            } else {
+              t.style.top = (r.bottom + 12) + 'px';
+              t.style.left = (r.left + r.width / 2) + 'px';
+              t.style.transform = 'translateX(-50%)';
+            }
+          }
+        });
+      }), 350);
+    }), 600);
+
+    setTimeout(guard(function() { toast('\uD83D\uDDE3 \u201C' + r1User + '\u201D'); }), 2800);
+    setTimeout(guard(function() { btnState('speak'); toast('Processing\u2026'); }), 3900);
+    setTimeout(guard(function() {
+      toast('Ava: ' + r1Reply);
+      _runDemoSpeakAnim(r1Reply, guard(function() {
+        // ── Round 2 ──────────────────────────────────────────────────────────
+        toastHide();
+        setTimeout(guard(function() {
+          btnState('listen');
+          toast('\uD83C\uDF99 Listening\u2026');
+
+          setTimeout(guard(function() { toast('\uD83D\uDDE3 \u201C' + r2User + '\u201D'); }), 1800);
+          setTimeout(guard(function() { btnState('speak'); toast('Saving\u2026'); }), 2900);
+          setTimeout(guard(function() {
+            toast('Ava: ' + r2Reply);
+            setTimeout(guard(_injectDemoNote), 1500);
+            _runDemoSpeakAnim(r2Reply, guard(function() {
+              btnState('listen');
+              toast('\uD83C\uDF99 Listening\u2026');
+              setTimeout(guard(function() { stopAll(); token.cancelled = true; }), 2000);
+            }));
+          }), 3800);
+        }), 400);
+      }));
+    }), 5100);
+  };
+  // ───────────────────────────────────────────────────────────────────────────
+
 })();
 
 
@@ -26456,6 +26736,14 @@ fetch('https://synbot-whatsapp-2.onrender.com/heartbeat').catch(function(){});
 .src-supplier-card .src-score.poor { background:rgba(255,80,80,0.1); color:#ff5050; }
 .src-msg-btn { background:rgba(124,106,247,0.12); border:1px solid rgba(124,106,247,0.25); border-radius:8px; padding:6px 12px; font-size:11px; color:rgba(124,106,247,0.9); cursor:pointer; transition:all .15s; }
 .src-msg-btn:hover { background:rgba(124,106,247,0.22); }
+
+/* ── Narrow iframe fix: prevent home screen stacking ── */
+@media(max-width:1050px) {
+  #chatEmptyState { padding-top: 8vh !important; bottom: 90px !important; }
+  #chatEmptyState h2 { font-size: 1.6rem !important; }
+  .ncmd-wrap { max-width: 90% !important; }
+  .input-wrapper { max-width: 100% !important; padding: 0 12px !important; }
+}
 </style>
 
 <script>
@@ -26830,6 +27118,110 @@ window.addEventListener('message', function(e) {
     case 'robotclose':
       var synChatEl = document.getElementById('synBotChat');
       if (synChatEl) synChatEl.style.display = 'none';
+      break;
+
+    case 'init-demo':
+      // Force bottom nav on load
+      try {
+        if (!document.body.classList.contains('bottom-nav')) {
+          _navAtBottom = true;
+          document.body.classList.add('bottom-nav');
+          if (typeof initBnavDrag === 'function') initBnavDrag();
+          _navFullwidth = true;
+          var _bar = document.getElementById('bottomNavBar');
+          if (_bar) { _bar.classList.add('fullwidth'); }
+          document.body.classList.add('nav-fullwidth');
+        }
+      } catch(e) {}
+      // Navigate to chat page
+      try { if (typeof newChat === 'function') newChat(); } catch(e) {}
+      // Hook setView to stop/restart demo voice on page changes
+      (function(){
+        if (window._demoViewHooked) return;
+        window._demoViewHooked = true;
+        var _origSetView = window.setView;
+        if (typeof _origSetView !== 'function') return;
+        var _initDone = false;
+        // Mark init done after first render settles
+        setTimeout(function(){ _initDone = true; }, 3000);
+        window.setView = function(id) {
+          _origSetView.call(this, id);
+          if (typeof GROQ_KEYS === 'undefined' || GROQ_KEYS[0] !== 'DEMO_KEY') return;
+          if (!_initDone) return; // ignore navigations during startup
+          if (id === 'sec-chat') {
+            // Returned to chat — restart demo voice
+            clearTimeout(window._demoVoiceRestartTimer);
+            window._demoVoiceRestartTimer = setTimeout(function(){
+              if (typeof stopAll === 'function') try { stopAll(); } catch(e) {}
+              window.parent.postMessage({ src:'synapses-demo', action:'restart-voice' }, '*');
+            }, 800);
+          } else {
+            // Left chat — stop demo voice
+            clearTimeout(window._demoVoiceRestartTimer);
+            if (typeof stopAll === 'function') try { stopAll(); } catch(e) {}
+            if (typeof toastHide === 'function') try { toastHide(); } catch(e) {}
+          }
+        };
+      })();
+      break;
+
+    case 'demo-voice':
+      try {
+        if (typeof window._demoVoiceStart === 'function') {
+          window._demoVoiceStart();
+        }
+      } catch(e) {}
+      break;
+
+    case 'show-topbar':
+      try {
+        TOP_BAR_HIDDEN = false;
+        var _topBar2 = document.querySelector('.top-bar');
+        if (_topBar2) _topBar2.classList.remove('hidden');
+        document.body.classList.remove('topbar-hidden');
+        var _btn2 = document.getElementById('topBarToggle');
+        if (_btn2) { _btn2.innerHTML = '▲'; _btn2.title = 'Hide top bar'; }
+        var _htb2 = document.querySelector('.hub-tab-bar');
+        var _onHub2 = document.getElementById('sec-hub') && document.getElementById('sec-hub').classList.contains('active');
+        if (_htb2) _htb2.style.display = _onHub2 ? 'flex' : 'none';
+        try { localStorage.setItem('synapses_topbar_hidden','0'); } catch(e2){}
+      } catch(e) {}
+      break;
+
+    case 'hide-topbar':
+      try {
+        TOP_BAR_HIDDEN = true;
+        var _topBar3 = document.querySelector('.top-bar');
+        if (_topBar3) _topBar3.classList.add('hidden');
+        document.body.classList.add('topbar-hidden');
+        var _btn3 = document.getElementById('topBarToggle');
+        if (_btn3) { _btn3.innerHTML = '▼'; _btn3.title = 'Show top bar'; }
+        var _htb3 = document.querySelector('.hub-tab-bar');
+        if (_htb3) _htb3.style.display = 'none';
+        try { localStorage.setItem('synapses_topbar_hidden','1'); } catch(e2){}
+        // Also stop any active demo voice and hide toast
+        if (window._topNavVoiceActive && typeof window.toggleTopNavVoice === 'function') {
+          try { window.toggleTopNavVoice(); } catch(e2){}
+        }
+        var _tnvT = document.getElementById('tnvToast');
+        if (_tnvT) _tnvT.classList.remove('show');
+        // Clean up demo note card
+        if (typeof window._demoNoteCleanup === 'function') { try { window._demoNoteCleanup(); } catch(e2){} }
+      } catch(e) {}
+      break;
+
+    case 'human-landing':
+      // Go to Health AI, show landing animation, don't skip yet
+      try {
+        if (typeof goHuman === 'function') goHuman(false);
+      } catch(e) {}
+      break;
+
+    case 'human-skip':
+      // Now skip the mood chooser to reveal main Health AI
+      try {
+        if (typeof skipHumanLanding === 'function') skipHumanLanding();
+      } catch(e) {}
       break;
 
     case 'click':
