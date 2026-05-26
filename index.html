@@ -878,77 +878,31 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   var fallback = document.getElementById('synFallback');
   if (!iframe) return;
 
-  var _demoStarted = false;
-  function _kickDemo() {
-    if (_demoStarted) return;
-    _demoStarted = true;
-    setTimeout(function(){ send('init-demo'); }, 1500);
-    setTimeout(startDemo, 2500);
-  }
-
-  var fallbackTimer = setTimeout(function(){
-    // Iframe loaded (Chrome allows local file iframes) — just kick the demo
-    _kickDemo();
-  }, 3000);
+  // sourcing.html self-drives the full demo loop internally.
+  // index.html only shows/hides the iframe and syncs the topbar on restart-voice.
 
   iframe.addEventListener('load', function(){
-    clearTimeout(fallbackTimer);
     fallback.style.display = 'none';
     iframe.style.display = 'block';
-    _kickDemo();
   });
 
-  iframe.addEventListener('mouseenter', function(){ _demoPaused = true; });
-  iframe.addEventListener('mouseleave', function(){ _demoPaused = false; });
+  // Fallback: show iframe after 3s even if load never fires
+  setTimeout(function(){
+    fallback.style.display = 'none';
+    iframe.style.display = 'block';
+  }, 3000);
 
   function send(action, target, duration) {
-    iframe.contentWindow.postMessage({ src:'synapses-demo', action:action, target:target, duration:duration }, '*');
+    try { iframe.contentWindow.postMessage({ src:'synapses-demo', action:action, target:target, duration:duration }, '*'); } catch(e) {}
   }
 
-  var _demoPaused = false;
-  function wait(ms) { return new Promise(function(res){ setTimeout(res, ms); }); }
-  async function step(action, target, dur, pauseAfter) {
-    if (_demoPaused) await waitForResume();
-    send(action, target, dur || 1800);
-    await wait(pauseAfter || (dur ? dur + 400 : 2200));
-  }
-  function waitForResume() {
-    return new Promise(function(res){
-      var check = setInterval(function(){ if(!_demoPaused){ clearInterval(check); res(); } }, 200);
-    });
-  }
-
-  // Listen for restart-voice signal from iframe (user returned to chat)
+  // When iframe signals user returned to chat page, sync topbar show
   window.addEventListener('message', function(e) {
     if (e.data && e.data.src === 'synapses-demo' && e.data.action === 'restart-voice') {
       clearTimeout(window._voiceRestartTimer);
-      window._voiceRestartTimer = setTimeout(function(){
-        send('show-topbar');
-        setTimeout(function(){ send('demo-voice'); }, 1200);
-      }, 300);
+      window._voiceRestartTimer = setTimeout(function(){ send('show-topbar'); }, 300);
     }
   });
-
-  async function startDemo() {
-    // Always start on chat page ("What's on your mind")
-    send('nav', 'chat');
-    await wait(1500);
-    // 1. Voice scene — show topbar, trigger demo voice in iframe, hide after
-    send('show-topbar');
-    await wait(1200);
-    send('demo-voice');
-    await wait(28000);
-    send('hide-topbar');
-    await wait(600);
-    send('nav', 'tools');          await wait(3000);
-    send('nav', 'jobs');           await wait(3000);
-    send('nav', 'hub');            await wait(3000);
-    send('human-landing');         await wait(5000);
-    send('human-skip');            await wait(2500);
-    send('nav', 'world');          await wait(3000);
-    send('nav', 'chat');           await wait(2500);
-    startDemo();
-  }
 })();
 </script>
 </body>

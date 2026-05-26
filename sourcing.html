@@ -5148,6 +5148,8 @@ function renderTopBarBtns(){
   var cont=document.getElementById('topBarDynBtns');
   if(!cont) return;
   cont.innerHTML='';
+  // In demo mode, never show the Home / Health AI / Tools shortcut buttons
+  if (typeof GROQ_KEYS !== 'undefined' && GROQ_KEYS[0] === 'DEMO_KEY') return;
   navTopBarIds.forEach(function(id){
     var item=NAV_ALL_ITEMS.find(function(x){return x.id===id;});
     if(!item) return;
@@ -27230,5 +27232,138 @@ window.addEventListener('message', function(e) {
       break;
   }
 });
+
+// ── SELF-START DEMO — runs after all functions are defined ──────────────────
+// Drives the full demo loop from inside sourcing.html itself so it works
+// on GitHub Pages (where postMessage timing from index.html is unreliable).
+(function(){
+  if (typeof GROQ_KEYS === 'undefined' || GROQ_KEYS[0] !== 'DEMO_KEY') return;
+  // Only self-start when loaded inside an iframe
+  if (window.self === window.top) return;
+
+  function _wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  // Signal parent that we need a restart-voice (keeps index.html in sync)
+  function _notifyRestart(){
+    try { window.parent.postMessage({ src:'synapses-demo', action:'restart-voice' }, '*'); } catch(e){}
+  }
+
+  async function _runDemoLoop() {
+    // ── Bootstrap nav & topbar ─────────────────────────────────────────────
+    try {
+      // Force bottom-nav / fullwidth (belt-and-suspenders)
+      if (!document.body.classList.contains('bottom-nav')) {
+        window._navAtBottom = true;
+        document.body.classList.add('bottom-nav');
+        if (typeof initBnavDrag === 'function') try { initBnavDrag(); } catch(e){}
+        window._navFullwidth = true;
+        var _bar = document.getElementById('bottomNavBar');
+        if (_bar) _bar.classList.add('fullwidth');
+        document.body.classList.add('nav-fullwidth');
+      }
+      // Navigate to chat
+      if (typeof newChat === 'function') newChat();
+      // Hook setView if not already done
+      if (!window._demoViewHooked) {
+        window._demoViewHooked = true;
+        var _origSV = window.setView;
+        if (typeof _origSV === 'function') {
+          var _svInitDone = false;
+          setTimeout(function(){ _svInitDone = true; }, 3000);
+          window.setView = function(id) {
+            _origSV.call(this, id);
+            if (!_svInitDone) return;
+            if (id === 'sec-chat') {
+              clearTimeout(window._demoVoiceRestartTimer);
+              window._demoVoiceRestartTimer = setTimeout(function(){
+                if (typeof stopAll === 'function') try { stopAll(); } catch(e){}
+                _notifyRestart();
+              }, 800);
+            } else {
+              clearTimeout(window._demoVoiceRestartTimer);
+              if (typeof stopAll === 'function') try { stopAll(); } catch(e){}
+              if (typeof toastHide === 'function') try { toastHide(); } catch(e){}
+            }
+          };
+        }
+      }
+    } catch(e){}
+
+    await _wait(2000);
+
+    // ── Scene 1: Voice demo ─────────────────────────────────────────────────
+    try {
+      // Show topbar
+      window.TOP_BAR_HIDDEN = false;
+      var _tb = document.querySelector('.top-bar');
+      if (_tb) _tb.classList.remove('hidden');
+      document.body.classList.remove('topbar-hidden');
+      var _tbBtn = document.getElementById('topBarToggle');
+      if (_tbBtn) { _tbBtn.innerHTML = '▲'; _tbBtn.title = 'Hide top bar'; }
+    } catch(e){}
+
+    await _wait(1200);
+
+    // Start voice demo
+    try {
+      if (typeof window._demoVoiceStart === 'function') window._demoVoiceStart();
+    } catch(e){}
+
+    await _wait(28000);
+
+    // Hide topbar
+    try {
+      window.TOP_BAR_HIDDEN = true;
+      var _tb2 = document.querySelector('.top-bar');
+      if (_tb2) _tb2.classList.add('hidden');
+      document.body.classList.add('topbar-hidden');
+      var _tbBtn2 = document.getElementById('topBarToggle');
+      if (_tbBtn2) { _tbBtn2.innerHTML = '▼'; _tbBtn2.title = 'Show top bar'; }
+      if (window._topNavVoiceActive && typeof window.toggleTopNavVoice === 'function') {
+        try { window.toggleTopNavVoice(); } catch(e2){}
+      }
+      var _tnvT = document.getElementById('tnvToast');
+      if (_tnvT) _tnvT.classList.remove('show');
+      if (typeof window._demoNoteCleanup === 'function') { try { window._demoNoteCleanup(); } catch(e2){} }
+    } catch(e){}
+
+    await _wait(600);
+
+    // ── Scene 2: Page tour ──────────────────────────────────────────────────
+    var navMap2 = {
+      'tools':   function(){ if(typeof showTools==='function') showTools('all'); },
+      'jobs':    function(){ if(typeof goJobs==='function') goJobs(); },
+      'hub':     function(){ if(typeof goHub==='function') goHub('feed'); },
+      'human':   function(){ if(typeof goHuman==='function') goHuman(false); },
+      'world':   function(){ if(typeof goWorld==='function') goWorld(); },
+      'chat':    function(){ if(typeof newChat==='function') newChat(); }
+    };
+    function _nav(key){ try{ navMap2[key] && navMap2[key](); }catch(e){} }
+
+    _nav('tools');    await _wait(3000);
+    _nav('jobs');     await _wait(3000);
+    _nav('hub');      await _wait(3000);
+
+    // Health AI landing
+    _nav('human');    await _wait(5000);
+    try { if(typeof skipHumanLanding==='function') skipHumanLanding(); } catch(e){}
+    await _wait(2500);
+
+    _nav('world');    await _wait(3000);
+    _nav('chat');     await _wait(2500);
+
+    // Loop
+    _runDemoLoop();
+  }
+
+  // Wait for DOM + all functions to be ready before starting
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(_runDemoLoop, 1200);
+    });
+  } else {
+    setTimeout(_runDemoLoop, 1200);
+  }
+})();
 </script>
 </body>
