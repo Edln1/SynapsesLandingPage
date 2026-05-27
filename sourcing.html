@@ -1739,7 +1739,7 @@ to{opacity:0;transform:translateX(-40px);}}
 .applicant-email{font-size:12px;color:var(--muted);}
 #sec-chat,#sec-coach{overflow:hidden;}
 /* ── Social feed gallery grid ── */
-#socialFeedList{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:4px 2px 16px;align-items:stretch;transition:gap .35s cubic-bezier(0.4,0,0.2,1);}
+#socialFeedList{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;padding:4px 2px 16px;align-items:stretch;transition:gap .35s cubic-bezier(0.4,0,0.2,1);}
 @keyframes sfTilePop{0%{opacity:0;transform:scale(0.88);}60%{transform:scale(1.03);}100%{opacity:1;transform:scale(1);}}
 .sf-tile{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06);border-radius:13px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,border-color .15s;}
 .sf-tile:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.11);}
@@ -3960,7 +3960,56 @@ window.getWebAudioNode = getWebAudioNode;
                 </div>
               </div>
             </div>
-            <div id="socialFeedList"></div>
+            <div id="socialFeedList">
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#7c6af7;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">M</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Maya Chen</div><div style="font-size:10.5px;color:var(--muted);">2m ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">Just shipped my AI scheduling assistant 🚀 3 weeks from idea to prod. Who wants early access?</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 142</span><span style="cursor:pointer;">💬 8</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#e85d96;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">Z</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Zoe Williams</div><div style="font-size:10.5px;color:var(--muted);">1h ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">My AI support bot handled 1,200 tickets with zero escalations ✨ Slow is smooth, smooth is fast.</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 203</span><span style="cursor:pointer;">💬 12</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#38bdf8;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">C</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Carlos Reyes</div><div style="font-size:10.5px;color:var(--muted);">3h ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">Hot take: AI won't replace devs. It'll replace devs who only translate requirements. Skill up on judgment 🧠</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 318</span><span style="cursor:pointer;">💬 21</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#f97316;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">A</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Amir Hassan</div><div style="font-size:10.5px;color:var(--muted);">5h ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">Fine-tuning is usually not the answer. RAG + good prompts matched my $40k fine-tuned model in a weekend 😅</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 412</span><span style="cursor:pointer;">💬 19</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#a855f7;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">L</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Lena Kim</div><div style="font-size:10.5px;color:var(--muted);">7h ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">Open-sourcing my Figma→React AI plugin Friday 🎨 It reads semantics, not pixels — actual accessible code, not div soup.</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 176</span><span style="cursor:pointer;">💬 14</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;break-inside:avoid;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:#00d9a8;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:12px;font-family:'Syne',sans-serif;">D</div>
+      <div><div style="font-size:12.5px;font-weight:600;color:var(--text);">Devraj Patel</div><div style="font-size:10.5px;color:var(--muted);">9h ago</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--text);line-height:1.55;margin:0 0 10px;">500 beta users on my AI code review tool and still bootstrapped 🤑 Looking for a design co-founder. DMs open.</p>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);"><span style="cursor:pointer;">❤️ 87</span><span style="cursor:pointer;">💬 5</span></div>
+  </div>
+</div>
           </div>
 
           <!-- DRAG HANDLE between the two feeds -->
@@ -4007,7 +4056,48 @@ window.getWebAudioNode = getWebAudioNode;
                 <button class="feed-filter" id="ff-feedback" onclick="filterFeed('feedback',this)">Feedback</button>
                 <button class="feed-filter" id="ff-skill" onclick="filterFeed('skill',this)">Skill</button>
               </div>
-              <div id="feedList"></div>
+              <div id="feedList">
+  <div class="feed-post" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#7c6af7;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-family:'Syne',sans-serif;font-size:14px;">M</div>
+      <div><div style="font-weight:600;font-size:13px;color:var(--text);">Maya Chen</div><div style="font-size:11px;color:var(--muted);">2m ago · 🚀 Launch</div></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 12px;">Just shipped v1 of my AI scheduling assistant — it reads your calendar, emails, and Notion to auto-block deep work time. 3 weeks from idea to production. Who wants early access? 🙋</p>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+      <span style="cursor:pointer;">❤️ 142</span><span style="cursor:pointer;">💬 8 comments</span><span style="cursor:pointer;">🔖 Save</span>
+    </div>
+  </div>
+  <div class="feed-post" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#00d9a8;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-family:'Syne',sans-serif;font-size:14px;">D</div>
+      <div><div style="font-weight:600;font-size:13px;color:var(--text);">Devraj Patel</div><div style="font-size:11px;color:var(--muted);">18m ago · 🤝 Collab</div></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 12px;">Looking for a co-founder with design / GTM skills. I'm a solo ML engineer at 500 beta users on an AI code review tool. Revenue-positive, no VC yet. Let's talk 👀</p>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+      <span style="cursor:pointer;">❤️ 87</span><span style="cursor:pointer;">💬 5 comments</span><span style="cursor:pointer;">🔖 Save</span>
+    </div>
+  </div>
+  <div class="feed-post" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#e85d96;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-family:'Syne',sans-serif;font-size:14px;">Z</div>
+      <div><div style="font-weight:600;font-size:13px;color:var(--text);">Zoe Williams</div><div style="font-size:11px;color:var(--muted);">1h ago · 🏆 Win</div></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 12px;">My AI support bot just handled 1,200 tickets without a single escalation ✨ Secret: spent 2 weeks on edge cases before launch. Slow is smooth, smooth is fast.</p>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+      <span style="cursor:pointer;">❤️ 203</span><span style="cursor:pointer;">💬 12 comments</span><span style="cursor:pointer;">🔖 Save</span>
+    </div>
+  </div>
+  <div class="feed-post" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#38bdf8;display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-family:'Syne',sans-serif;font-size:14px;">C</div>
+      <div><div style="font-weight:600;font-size:13px;color:var(--text);">Carlos Reyes</div><div style="font-size:11px;color:var(--muted);">3h ago · 💡 Insight</div></div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 12px;">Hot take: "AI will replace devs" is wrong. What's dying is translating requirements into code. What's thriving is understanding WHY — architecture, system design, product thinking. Skill up on judgment.</p>
+    <div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">
+      <span style="cursor:pointer;">❤️ 318</span><span style="cursor:pointer;">💬 21 comments</span><span style="cursor:pointer;">🔖 Save</span>
+    </div>
+  </div>
+</div>
             </div>
           </div>
 
@@ -4393,7 +4483,69 @@ window.getWebAudioNode = getWebAudioNode;
           <button class="job-filter" onclick="filterJobs('Engineering',this)">⚙️ Engineering</button>
           <button class="job-filter" onclick="filterJobs('Design',this)">🎨 Design</button>
         </div>
-        <div id="jobsList"></div>
+        <div id="jobsList">
+  <div class="job-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:22px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+      <div><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;">Senior AI Engineer</div><div style="font-size:12px;color:var(--muted);">Nexus Labs</div></div>
+      <span style="background:rgba(124,106,247,0.15);color:#7c6af7;border:1px solid rgba(124,106,247,0.3);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600;">🌍 Remote</span>
+    </div>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;">
+      <span>⚙️ Engineering</span><span>💰 $160k–$210k</span><span>📍 Remote / Global</span>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;margin:0 0 12px;">Build and deploy production LLM pipelines. Work across retrieval, fine-tuning, and inference infrastructure. Strong Python + PyTorch required.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">LLMs</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Python</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">PyTorch</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">RAG</span>
+    </div>
+  </div>
+  <div class="job-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:22px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+      <div><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;">AI Product Designer</div><div style="font-size:12px;color:var(--muted);">Orbit Studio</div></div>
+      <span style="background:rgba(232,93,150,0.15);color:#e85d96;border:1px solid rgba(232,93,150,0.3);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600;">🏢 Hybrid</span>
+    </div>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;">
+      <span>🎨 Design</span><span>💰 $120k–$155k</span><span>📍 San Francisco, CA</span>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;margin:0 0 12px;">Shape the future of human-AI interaction. We need a designer obsessed with making AI tools feel intuitive, trustworthy, and delightful. Figma + Framer fluency a must.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Figma</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">AI/UX</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Framer</span>
+    </div>
+  </div>
+  <div class="job-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:22px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+      <div><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;">ML Research Scientist</div><div style="font-size:12px;color:var(--muted);">Deepfield AI</div></div>
+      <span style="background:rgba(0,217,168,0.15);color:#00d9a8;border:1px solid rgba(0,217,168,0.3);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600;">🌍 Remote</span>
+    </div>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;">
+      <span>🔬 Research</span><span>💰 $180k–$240k</span><span>📍 Remote (US/EU)</span>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;margin:0 0 12px;">Drive fundamental research on multimodal reasoning and agent architectures. PhD preferred. Strong publication record in NeurIPS, ICML, or ICLR.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Transformers</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Multimodal</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Agents</span>
+    </div>
+  </div>
+  <div class="job-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:22px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+      <div><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:3px;">Full-Stack AI Developer</div><div style="font-size:12px;color:var(--muted);">BuilderOS</div></div>
+      <span style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:600;">🌍 Remote</span>
+    </div>
+    <div style="display:flex;gap:12px;font-size:11.5px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap;">
+      <span>⚙️ Engineering</span><span>💰 $130k–$170k</span><span>📍 Remote / Worldwide</span>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;margin:0 0 12px;">Own features end-to-end: React frontend, Node/Python backend, and real-time AI integrations. Small team, big impact.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">React</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">Node.js</span>
+      <span style="background:rgba(255,255,255,0.06);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);">TypeScript</span>
+    </div>
+  </div>
+</div>
       </div>
 
       <!-- AI-Age Careers Panel -->
@@ -5370,7 +5522,7 @@ var allJobs=[],currentUser=null,jobFilter='all';
       if(m) m.style.display='none';
       if(typeof window._hideSplash==='function') window._hideSplash();
       // Wait for app init before navigating home
-      setTimeout(function(){ if(typeof goHome==='function') goHome(); },300);
+      setTimeout(function(){ if(typeof goHome==='function') goHome(); if(typeof renderSocialFeed==='function') renderSocialFeed(); },300);
     });
   } else {
     showAuthModal();
@@ -8873,7 +9025,7 @@ function _syncNotesToggleVisibility(){
     if(layer){ layer.style.opacity = window._stickyNotesVisible ? '1' : '0'; }
   } else {
     if(btn) btn.style.display = 'none';
-    if(layer){
+    if(layer && !window._demoNoteActive){
       layer.style.opacity = '0';
       Array.from(layer.children).forEach(function(c){ c.style.display = 'none'; });
     }
@@ -12016,7 +12168,7 @@ function startFeedDrag(e) {
 
 var _matchConnectVisible = false;
 var _builderFeedVisible = false;
-var _socialGridSize = 0;
+var _socialGridSize = 2;
 function toggleSocialGrid(){
   _socialGridSize = (_socialGridSize + 1) % 3;
   var list = document.getElementById('socialFeedList');
@@ -12512,7 +12664,34 @@ function renderSocialFeed(){
   }
   if(!socialPosts.length){list.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-size:12px;">No posts yet. Say something!</div>';return;}
   var mediaPosts=socialPosts.filter(function(p){return p.media&&p.media.length>0;});
-  if(!mediaPosts.length){list.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-size:12px;">No photo or video posts yet.</div>';return;}
+  if(!mediaPosts.length){
+    // Inject fake demo media posts
+    var demoTiles = [
+      {name:'Maya Chen',    initial:'M', color:'#7c6af7', time:'2m ago',  likes:142, comments:3, text:'Just shipped my AI scheduling assistant 🚀 3 weeks idea to prod!', img:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=80'},
+      {name:'Zoe Williams', initial:'Z', color:'#e85d96', time:'1h ago',  likes:203, comments:7, text:'Zero escalations on 1,200 tickets ✨ slow is smooth, smooth is fast', img:'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&q=80'},
+      {name:'Carlos Reyes', initial:'C', color:'#38bdf8', time:'3h ago',  likes:318, comments:11,text:'New dashboard for our LLM eval suite — built in a weekend 🛠️',         img:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80'},
+      {name:'Lena Kim',     initial:'L', color:'#a855f7', time:'5h ago',  likes:176, comments:9, text:'Figma→React AI plugin drops Friday 🎨 actual semantic code, not div soup', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80'},
+      {name:'Amir Hassan',  initial:'A', color:'#f97316', time:'8h ago',  likes:412, comments:14,text:'RAG + good prompts matched my $40k fine-tune in a weekend 😅',          img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80'},
+      {name:'Devraj Patel', initial:'D', color:'#00d9a8', time:'9h ago',  likes:87,  comments:4, text:'500 beta users, bootstrapped, looking for a design co-founder 🤑',    img:'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&q=80'}
+    ];
+    list.innerHTML = demoTiles.map(function(p){
+      return '<div class="sf-tile">'+
+        '<img src="'+p.img+'" class="sf-thumb" loading="lazy" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px 10px 0 0;">'+
+        '<div class="sf-body">'+
+          '<div class="sf-author">'+
+            '<div class="sf-av" style="background:'+p.color+';display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:11px;font-family:Syne,sans-serif;">'+p.initial+'</div>'+
+            '<div><div class="sf-name">'+p.name+'</div><div class="sf-time">'+p.time+'</div></div>'+
+          '</div>'+
+          '<div class="sf-text">'+p.text+'</div>'+
+        '</div>'+
+        '<div class="sf-actions">'+
+          '<button style="color:var(--muted);">🤍 '+p.likes+'</button>'+
+          '<button style="color:var(--muted);">💬 '+p.comments+'</button>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    return;
+  }
   list.innerHTML=mediaPosts.map(function(p){
     var liked=currentUser&&p.likedBy.has(currentUser.email);
 
@@ -12782,7 +12961,28 @@ function renderFeed(){
   // Posts
   var list=document.getElementById('feedList');if(!list)return;
   var posts=feedFilter==='all'?feedPosts:feedPosts.filter(function(p){return p.cat===feedFilter;});
-  if(!posts.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">No posts yet. Be the first!</div>';return;}
+  if(!posts.length){
+    list.innerHTML=[
+      {color:'#7c6af7',init:'M',name:'Maya Chen',    time:'2m ago', cat:'🚀 Launch',   text:'Just shipped my AI scheduling assistant — reads your calendar, emails & Notion to auto-block deep work. 3 weeks idea to prod. Who wants early access? 🙋',  likes:142,comments:8},
+      {color:'#00d9a8',init:'D',name:'Devraj Patel', time:'18m ago',cat:'🤝 Collab',   text:'Solo ML engineer, 500 beta users on an AI code review tool, revenue-positive. Looking for a design/GTM co-founder. No VC yet. DMs open 👀',               likes:87, comments:5},
+      {color:'#e85d96',init:'Z',name:'Zoe Williams', time:'1h ago', cat:'🏆 Win',      text:'My AI support bot just handled 1,200 tickets with zero escalations ✨ Secret: 2 weeks on edge cases before launch. Slow is smooth, smooth is fast.',        likes:203,comments:12},
+      {color:'#f97316',init:'A',name:'Amir Hassan',  time:'5h ago', cat:'💡 Insight',  text:'Fine-tuning is usually not the answer. I spent $40k and 3 months on a model that RAG + a good system prompt matched in a weekend. Retrieval first, always.', likes:412,comments:19},
+      {color:'#a855f7',init:'L',name:'Lena Kim',     time:'7h ago', cat:'⚡ Skill',    text:'Offering: Figma→React AI component design. I read semantics not pixels — actual accessible production code, not div soup. First 3 clients free 🎨',          likes:176,comments:14},
+      {color:'#38bdf8',init:'C',name:'Carlos Reyes', time:'9h ago', cat:'💬 Feedback', text:'Built a weekend prototype: an AI that turns Loom recordings into structured PRDs. Would love brutal feedback before I invest more time. Link in comments 👇',   likes:94, comments:23}
+    ].map(function(p){
+      return'<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;margin-bottom:12px;">'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'+
+          '<div style="width:36px;height:36px;border-radius:10px;background:'+p.color+';display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-family:Syne,sans-serif;font-size:14px;">'+p.init+'</div>'+
+          '<div><div style="font-weight:600;font-size:13px;color:var(--text);">'+p.name+'</div><div style="font-size:11px;color:var(--muted);">'+p.time+' · '+p.cat+'</div></div>'+
+        '</div>'+
+        '<p style="font-size:13.5px;color:var(--text);line-height:1.6;margin:0 0 12px;">'+p.text+'</p>'+
+        '<div style="display:flex;gap:16px;font-size:12px;color:var(--muted);">'+
+          '<span style="cursor:pointer;">❤️ '+p.likes+'</span><span style="cursor:pointer;">💬 '+p.comments+' comments</span><span style="cursor:pointer;">🔖 Save</span>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    return;
+  }
   list.innerHTML=posts.map(buildPostHTML).join('');
 }
 
@@ -14411,11 +14611,25 @@ document.getElementById('hc-panel-wellbeing').innerHTML='<div style="margin-bott
 setTimeout(function(){initAva();renderNotes();},50);
   // Content is fully rendered — NOW trigger the laser entrance
   if(_hb){
-    _hb.style.display='flex';_hb.style.marginBottom='28px';_hb.style.opacity='1';
-    _hb.classList.remove('hero-hiding');void _hb.offsetWidth;
+    // Full reset — clear every inline style that could block the scan animation
+    _hb.classList.remove('hero-visible','hero-hiding');
+    _hb.removeAttribute('style'); // wipe ALL inline styles
+    _hb.style.display = 'flex';
+    _hb.style.marginBottom = '28px';
+    _hb.style.opacity = '0';
+    _hb.style.transform = 'translateY(-10px) scaleY(0.85)';
+    _hb.style.background = 'linear-gradient(135deg,rgba(0,217,168,0.07),rgba(124,106,247,0.09))';
+    _hb.style.border = '1px solid rgba(0,217,168,0.15)';
+    _hb.style.borderRadius = '16px';
+    _hb.style.padding = '20px 24px';
+    _hb.style.alignItems = 'center';
+    _hb.style.justifyContent = 'space-between';
+    _hb.style.flexWrap = 'wrap';
+    _hb.style.gap = '12px';
+    if(_hbtn) _hbtn.classList.remove('hero-active');
+    void _hb.offsetWidth; // force reflow
     runHeroBarLaser(_hb, function(){
       _hb.classList.add('hero-visible');
-      _hb.style.animation='none';
       if(_hbtn) _hbtn.classList.add('hero-active');
     });
   }
@@ -26079,7 +26293,7 @@ function speakVoiceReply(text) {
   };
 
   // ── Demo voice: two-round sequence without real mic/API ─────────────────────
-  function _runDemoSpeakAnim(replyText, onDone) {
+  function _runDemoSpeakAnim(replyText, onDone, maxDur) {
     try {
       var wave = document.getElementById('tnvWaveIcon');
       if (!wave) { if (onDone) onDone(); return; }
@@ -26093,7 +26307,7 @@ function speakVoiceReply(text) {
       var cur        = mouthRest.slice();
       var glowBlur   = document.getElementById('tnvGlowBlur');
       var barsGroup  = document.getElementById('tnvBarsGroup');
-      var speakDur   = replyText.length * 55 + 1200;
+      var speakDur   = maxDur || Math.min(replyText.length * 55 + 1200, 3500);
       var speakStart = Date.now();
       var dRaf;
       (function frame() {
@@ -26167,10 +26381,14 @@ function speakVoiceReply(text) {
         '</div>';
 
       layer.appendChild(wrapper);
-      // Ensure state is hidden first so toggle flips it ON with proper animation
-      window._stickyNotesVisible = false;
-      if (typeof toggleStickyNotes === 'function') toggleStickyNotes();
-      // Animate card in after layer fades in
+      // Directly show layer — bypass toggleStickyNotes which gets reset by nav events
+      layer.style.transition = 'opacity 0.3s ease';
+      layer.style.opacity = '1';
+      layer.style.pointerEvents = 'auto';
+      wrapper.style.display = '';
+      wrapper.style.pointerEvents = 'auto';
+      window._demoNoteActive = true;
+      // Animate card in
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){
           wrapper.style.opacity = '1';
@@ -26181,8 +26399,16 @@ function speakVoiceReply(text) {
   }
 
   window._demoNoteCleanup = function() {
+    window._demoNoteActive = false;
     var old = document.getElementById('_demoNoteCard');
-    if (old) { old.style.opacity = '0'; setTimeout(function(){ old.parentNode && old.parentNode.removeChild(old); }, 350); }
+    var layer = document.getElementById('stickyNotesLayer');
+    if (old) old.style.opacity = '0';
+    if (layer) { layer.style.transition = 'opacity 0.35s ease'; layer.style.opacity = '0'; }
+    setTimeout(function(){
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      if (layer) { layer.style.opacity = ''; layer.style.transition = ''; }
+      window._stickyNotesVisible = false;
+    }, 380);
   };
 
   window._demoVoiceStart = function() {
@@ -26245,11 +26471,12 @@ function speakVoiceReply(text) {
           btnState('listen');
           toast('\uD83C\uDF99 Listening\u2026');
 
-          setTimeout(guard(function() { toast('\uD83D\uDDE3 \u201C' + r2User + '\u201D'); }), 1800);
-          setTimeout(guard(function() { btnState('speak'); toast('Saving\u2026'); }), 2900);
+          setTimeout(guard(function() { toast('\uD83D\uDDE3 \u201C' + r2User + '\u201D'); }), 1600);
+          setTimeout(guard(function() { btnState('speak'); toast('Saving\u2026'); }), 2600);
           setTimeout(guard(function() {
             toast('Ava: ' + r2Reply);
-            setTimeout(guard(_injectDemoNote), 1500);
+            setTimeout(guard(function() { toastHide(); }), 1300);
+            setTimeout(guard(_injectDemoNote), 1600);
             _runDemoSpeakAnim(r2Reply, guard(function() {
               btnState('listen');
               toast('\uD83C\uDF99 Listening\u2026');
@@ -27140,34 +27367,7 @@ window.addEventListener('message', function(e) {
       } catch(e) {}
       // Navigate to chat page
       try { if (typeof newChat === 'function') newChat(); } catch(e) {}
-      // Hook setView to stop/restart demo voice on page changes
-      (function(){
-        if (window._demoViewHooked) return;
-        window._demoViewHooked = true;
-        var _origSetView = window.setView;
-        if (typeof _origSetView !== 'function') return;
-        var _initDone = false;
-        // Mark init done after first render settles
-        setTimeout(function(){ _initDone = true; }, 3000);
-        window.setView = function(id) {
-          _origSetView.call(this, id);
-          if (typeof GROQ_KEYS === 'undefined' || GROQ_KEYS[0] !== 'DEMO_KEY') return;
-          if (!_initDone) return; // ignore navigations during startup
-          if (id === 'sec-chat') {
-            // Returned to chat — restart demo voice
-            clearTimeout(window._demoVoiceRestartTimer);
-            window._demoVoiceRestartTimer = setTimeout(function(){
-              if (typeof stopAll === 'function') try { stopAll(); } catch(e) {}
-              window.parent.postMessage({ src:'synapses-demo', action:'restart-voice' }, '*');
-            }, 800);
-          } else {
-            // Left chat — stop demo voice
-            clearTimeout(window._demoVoiceRestartTimer);
-            if (typeof stopAll === 'function') try { stopAll(); } catch(e) {}
-            if (typeof toastHide === 'function') try { toastHide(); } catch(e) {}
-          }
-        };
-      })();
+      // Hook disabled — self-running demo loop manages voice start/stop directly
       break;
 
     case 'demo-voice':
@@ -27205,9 +27405,8 @@ window.addEventListener('message', function(e) {
         if (_htb3) _htb3.style.display = 'none';
         try { localStorage.setItem('synapses_topbar_hidden','1'); } catch(e2){}
         // Also stop any active demo voice and hide toast
-        if (window._topNavVoiceActive && typeof window.toggleTopNavVoice === 'function') {
-          try { window.toggleTopNavVoice(); } catch(e2){}
-        }
+        if (window._demoVoiceToken) { window._demoVoiceToken.cancelled = true; window._demoVoiceToken = null; }
+        if (typeof stopAll === 'function') try { stopAll(); } catch(e2){}
         var _tnvT = document.getElementById('tnvToast');
         if (_tnvT) _tnvT.classList.remove('show');
         // Clean up demo note card
@@ -27246,11 +27445,6 @@ window.addEventListener('message', function(e) {
 
   function _wait(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
 
-  // Signal parent that we need a restart-voice (keeps index.html in sync)
-  function _notifyRestart(){
-    try { window.parent.postMessage({ src:'synapses-demo', action:'restart-voice' }, '*'); } catch(e){}
-  }
-
   async function _runDemoLoop() {
     // ── Bootstrap nav & topbar ─────────────────────────────────────────────
     try {
@@ -27266,30 +27460,6 @@ window.addEventListener('message', function(e) {
       }
       // Navigate to chat
       if (typeof newChat === 'function') newChat();
-      // Hook setView if not already done
-      if (!window._demoViewHooked) {
-        window._demoViewHooked = true;
-        var _origSV = window.setView;
-        if (typeof _origSV === 'function') {
-          var _svInitDone = false;
-          setTimeout(function(){ _svInitDone = true; }, 3000);
-          window.setView = function(id) {
-            _origSV.call(this, id);
-            if (!_svInitDone) return;
-            if (id === 'sec-chat') {
-              clearTimeout(window._demoVoiceRestartTimer);
-              window._demoVoiceRestartTimer = setTimeout(function(){
-                if (typeof stopAll === 'function') try { stopAll(); } catch(e){}
-                _notifyRestart();
-              }, 800);
-            } else {
-              clearTimeout(window._demoVoiceRestartTimer);
-              if (typeof stopAll === 'function') try { stopAll(); } catch(e){}
-              if (typeof toastHide === 'function') try { toastHide(); } catch(e){}
-            }
-          };
-        }
-      }
     } catch(e){}
 
     await _wait(2000);
@@ -27312,9 +27482,9 @@ window.addEventListener('message', function(e) {
       if (typeof window._demoVoiceStart === 'function') window._demoVoiceStart();
     } catch(e){}
 
-    await _wait(28000);
+    await _wait(20500);
 
-    // Hide topbar
+    // Hide topbar + clean up voice
     try {
       window.TOP_BAR_HIDDEN = true;
       var _tb2 = document.querySelector('.top-bar');
@@ -27329,6 +27499,18 @@ window.addEventListener('message', function(e) {
       if (_tnvT) _tnvT.classList.remove('show');
       if (typeof window._demoNoteCleanup === 'function') { try { window._demoNoteCleanup(); } catch(e2){} }
     } catch(e){}
+
+    await _wait(1400);
+
+    // Re-show topbar
+    try {
+      window.TOP_BAR_HIDDEN = false;
+      var _tb3 = document.querySelector('.top-bar');
+      if (_tb3) _tb3.classList.remove('hidden');
+      document.body.classList.remove('topbar-hidden');
+      var _tbBtn3 = document.getElementById('topBarToggle');
+      if (_tbBtn3) { _tbBtn3.innerHTML = '▲'; _tbBtn3.title = 'Hide top bar'; }
+    } catch(e) {}
 
     await _wait(600);
 
@@ -27431,25 +27613,58 @@ window.addEventListener('message', function(e) {
       }
     } catch(e) {}
 
-    // ── Scene 1.6: SYN-BOT hover → open → post to X ───────────────────────
+    // ── Scene 1.6: SYN-BOT fly-in → hover → open → post to X ─────────────────
     try {
-      // Make sure we're still on chat page with the AI response visible
-      // 1. Show the robot tooltip (simulate hover)
+      var _W0 = window.innerWidth, _H0 = window.innerHeight;
+      // Fetch _rtip in this scope (it's declared in a different closure above)
       var _rtip = document.getElementById('robotTooltip');
-      if (_rtip) {
-        document.getElementById('rtLabel').textContent = 'SYN-BOT // guide';
-        document.getElementById('rtText').textContent = 'hi! click me to chat — i can navigate, explain features, or just vibe 👾';
-        _rtip.style.transition = 'none';
-        _rtip.classList.remove('rt-hidden');
-        _rtip.classList.add('rt-visible');
-        requestAnimationFrame(function(){ requestAnimationFrame(function(){ _rtip.style.transition = ''; }); });
-        // Wave arm animation
-        var _arm = document.getElementById('rtWaveArm');
-        if (_arm) {
-          var _armClone = _arm.cloneNode(true);
-          _armClone.style.animation = 'cgWaveArm 1.2s ease-in-out';
-          _arm.parentNode.replaceChild(_armClone, _arm);
-        }
+
+      // Phase 1: ease mouse from screen-centre toward bottom-right corner (~1.2s)
+      // enters the 160×160 nearCorner zone → tinyBot._bringIn() fires → bot slides in
+      var _steps1 = 60;
+      for (var _si1 = 0; _si1 <= _steps1; _si1++) {
+        var _t1 = _si1 / _steps1;
+        var _e1 = _t1 * _t1;
+        document.dispatchEvent(new MouseEvent('mousemove', {
+          bubbles: true,
+          clientX: _W0 * 0.5 + (_W0 - 80 - _W0 * 0.5) * _e1,
+          clientY: _H0 * 0.5 + (_H0 - 80 - _H0 * 0.5) * _e1
+        }));
+        await _wait(20);
+      }
+
+      // Phase 2: pause — let tiny bot settle into corner position
+      await _wait(700);
+
+      // Phase 3: inch cursor onto the tiny bot sprite so dist < hitRadius fires showRobot()
+      // _getRobotScreenPos() gives live screen coords of the sprite centre
+      var _tc = document.getElementById('tinyBotCanvas');
+      var _destX = _W0 - 48, _destY = _H0 - 48;
+      if (_tc && _tc._getRobotScreenPos) {
+        var _rp = _tc._getRobotScreenPos();
+        _destX = _rp.x; _destY = _rp.y;
+      }
+      var _startX = _W0 - 80, _startY = _H0 - 80;
+      var _steps2 = 40;
+      for (var _si2 = 0; _si2 <= _steps2; _si2++) {
+        var _t2 = _si2 / _steps2;
+        document.dispatchEvent(new MouseEvent('mousemove', {
+          bubbles: true,
+          clientX: _startX + (_destX - _startX) * _t2,
+          clientY: _startY + (_destY - _startY) * _t2
+        }));
+        await _wait(18);
+      }
+
+      // Phase 4: wait for 600ms fly canvas animation to complete + tooltip to pop
+      await _wait(1200);
+
+      // Phase 5: hold cursor on robot — proximity keeps tooltip alive; trigger wave
+      var _arm = document.getElementById('rtWaveArm');
+      if (_arm) {
+        var _armClone = _arm.cloneNode(true);
+        _armClone.style.animation = 'cgWaveArm 1.2s ease-in-out';
+        _arm.parentNode.replaceChild(_armClone, _arm);
       }
       await _wait(1800);
 
@@ -27563,15 +27778,144 @@ window.addEventListener('message', function(e) {
 
     _nav('tools');    await _wait(3000);
     _nav('jobs');     await _wait(3000);
-    _nav('hub');      await _wait(3000);
 
-    // Health AI landing
+    // ── Hub: go to community photo grid, then slide open builder feed right panel ──
+    _nav('hub');      await _wait(400);
+    try {
+      // Force builder feed fully closed — reset both DOM and state flag
+      var _bfc = document.getElementById('builderFeedCol');
+      if (_bfc) {
+        _bfc.style.transition = 'none';
+        _bfc.style.width = '0';
+        _bfc.style.minWidth = '0';
+        _bfc.style.padding = '0';
+        _bfc.style.overflow = 'hidden';
+      }
+      // Force state to closed regardless of previous loop
+      window._builderFeedVisible = false;
+    } catch(e) {}
+    await _wait(900);
+    // Re-enable transition then open
+    try {
+      var _bfc2Open = document.getElementById('builderFeedCol');
+      if (_bfc2Open) {
+        _bfc2Open.style.transition = 'width .25s ease, min-width .25s ease, padding .25s ease';
+      }
+      await new Promise(function(r){ requestAnimationFrame(function(){ requestAnimationFrame(r); }); });
+      if (typeof toggleBuilderFeed === 'function') toggleBuilderFeed();
+    } catch(e) {}
+    await _wait(3200);
+
+    // Health AI landing — force hero bar hidden before navigating so laser scan always plays fresh
+    try {
+      var _hbPre = document.getElementById('humanHeroBar');
+      if (_hbPre) {
+        _hbPre.classList.remove('hero-visible', 'hero-hiding');
+        _hbPre.style.cssText = _hbPre.style.cssText; // flush
+        _hbPre.style.display = 'none';
+        _hbPre.style.opacity = '0';
+        _hbPre.style.animation = '';
+        _hbPre.style.transform = '';
+      }
+      var _hbtnPre = document.getElementById('humanHeroToggleBtn');
+      if (_hbtnPre) _hbtnPre.classList.remove('hero-active');
+      // Also reset humanMood so goHuman shows landing
+      window.humanMood = null;
+    } catch(e) {}
     _nav('human');    await _wait(5000);
     try { if(typeof skipHumanLanding==='function') skipHumanLanding(); } catch(e){}
     await _wait(2500);
 
     _nav('world');    await _wait(3000);
-    _nav('chat');     await _wait(2500);
+
+    // ── Scene 3: Whiteboard demo ─────────────────────────────────────────────
+    try {
+      // ── Wipe ALL saved board state BEFORE goWhiteboard() loads it ──
+      // This prevents the fused player from the previous loop from flashing
+      // on screen while the board restores, before our clear code runs.
+      try {
+        if (typeof WB !== 'undefined') {
+          WB.paths = []; WB.els = []; WB.selId = null; WB.ready = false;
+        }
+        if (typeof WB_BOARDS !== 'undefined') {
+          WB_BOARDS.forEach(function(b){ b._audioData = []; b.elsSnapshot = ''; b.paths = []; });
+        }
+        try { localStorage.removeItem('synapses_wboards'); } catch(e) {}
+        var _wbLayerPre = document.getElementById('wbLayer');
+        if (_wbLayerPre) _wbLayerPre.innerHTML = '';
+        window._wbLastPlayedPlayer = null;
+        window._fuseHover = false;
+        window._fuseFired = false;
+        // Force WB_CUR_ID to null so wbBoardsLoad creates a fresh board
+        if (typeof WB_CUR_ID !== 'undefined') window.WB_CUR_ID = null;
+        if (typeof WB !== 'undefined') WB.ready = false;
+      } catch(e2) {}
+
+      if(typeof goWhiteboard==='function') goWhiteboard();
+      await _wait(1400);
+
+      var _wbSec = document.getElementById('sec-whiteboard');
+      if(_wbSec) {
+        var _sr = _wbSec.getBoundingClientRect();
+
+        // ── Drop 2 images ──
+        var _imgs = [
+          { url:'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80', x: 60,  y: 60  },
+          { url:'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',   x: 400, y: 80 }
+        ];
+        _imgs.forEach(function(im) {
+          var _img = document.createElement('img');
+          _img.src = im.url;
+          _img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;pointer-events:none;';
+          _img.setAttribute('crossorigin','anonymous');
+          if(typeof wbMake==='function') wbMake('img', im.x, im.y, 280, 190, _img);
+        });
+        await _wait(800);
+
+        // ── Drop exactly 2 audio players, one at a time with gap ──
+        var _audioTracks = [
+          { src:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', name:'lofi-beat-01.mp3' },
+          { src:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', name:'ambient-mix-02.mp3' }
+        ];
+        // Use wbViewCenter screen coords
+        var _vc = (typeof wbViewCenter==='function') ? wbViewCenter() : {x: _sr.left + _sr.width/2, y: _sr.top + _sr.height/2};
+        // First audio player
+        if(typeof wbAddAudio==='function') {
+          wbAddAudio(_audioTracks[0].src, _audioTracks[0].name, _vc.x - 80, _vc.y + 60);
+        }
+        await _wait(700);
+        // Second audio player — check count is exactly 1 before adding
+        var _existingAudio = document.querySelectorAll('.wb-audio-player').length;
+        if(typeof wbAddAudio==='function' && _existingAudio < 3) {
+          wbAddAudio(_audioTracks[1].src, _audioTracks[1].name, _vc.x + 60, _vc.y + 90);
+        }
+        await _wait(1200);
+
+        // ── Trigger fuser orb animation ──
+        // The fuser canvas loop watches window._fuseHover and increments fuseT
+        // at +0.022/frame (~60fps). At fuseT>=0.73 it sparks, at fuseT>=1 it
+        // calls wbFuseAll() automatically. We just set the flag and wait ~3s.
+        var _fuseBtn = document.querySelector('[onmouseenter*="_fuseHover=true"]') ||
+                       document.querySelector('[title*="merge"]') ||
+                       document.querySelector('[title*="fuse"]');
+        if (_fuseBtn) {
+          window._fuseFired = false;
+          window._fuseHover = true;
+          _fuseBtn.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+          // Hook wbFuseAll so hover releases the instant the merge fires (mirrors real mouse-out)
+          var _origFuseAll = window.wbFuseAll;
+          window.wbFuseAll = function() {
+            _origFuseAll.apply(this, arguments);
+            window._fuseHover = false;
+            window._fuseFired = false;
+            _fuseBtn.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+            window.wbFuseAll = _origFuseAll; // restore
+          };
+          await _wait(3800); // enough for full charge (~2.3s) + spark + wbFuseAll + orbs separate
+        }
+        await _wait(800); // brief pause on merged playlist before looping
+      }
+    } catch(e) {}
 
     // Loop
     _runDemoLoop();
