@@ -297,6 +297,10 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
     display:block!important;
   }
   .syn-sidebar{display:none}
+  .demo-titlebar{padding:6px 10px;gap:7px}
+  .demo-dot{width:7px;height:7px}
+  .demo-dots{gap:4px}
+  .demo-url{font-size:9px;padding:3px 8px}
 
   /* Sections */
   .lp-section{padding:48px 20px}
@@ -966,6 +970,14 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   iframe.addEventListener('load', function(){
     fallback.style.display = 'none';
     iframe.style.display = 'block';
+    // On mobile: one-time blur of any autofocused input on load — nothing else
+    if (window.innerWidth <= 640) {
+      try {
+        var iDoc = iframe.contentDocument || iframe.contentWindow.document;
+        var focused = iDoc.activeElement;
+        if (focused && focused !== iDoc.body) focused.blur();
+      } catch(e) {}
+    }
   });
 
   // Fallback: show iframe after 3s even if load never fires
@@ -1005,6 +1017,25 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   }
   scaleMobileDemo();
   window.addEventListener('resize', scaleMobileDemo);
+
+  // Remap touch coordinates on mobile — CSS scale shifts where taps land
+  if (window.innerWidth <= 640) {
+    synApp.addEventListener('touchstart', function(e) {
+      try {
+        var rect = iframe.getBoundingClientRect();
+        var scaleVal = rect.width / 1470;
+        var touch = e.touches[0];
+        var x = (touch.clientX - rect.left) / scaleVal;
+        var y = (touch.clientY - rect.top) / scaleVal;
+        var iDoc = iframe.contentDocument || iframe.contentWindow.document;
+        var el = iDoc.elementFromPoint(x, y);
+        if (el) {
+          var evt = new MouseEvent('click', { bubbles: true, cancelable: true, clientX: x, clientY: y });
+          el.dispatchEvent(evt);
+        }
+      } catch(err) {}
+    }, { passive: true });
+  }
 
   // When iframe signals user returned to chat page, sync topbar show
   window.addEventListener('message', function(e) {
