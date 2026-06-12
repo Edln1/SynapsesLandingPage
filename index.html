@@ -392,11 +392,11 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
       </div>
 
       <!-- ═══ THE REAL SYNAPSES APP UI ═══ -->
-      <div class="syn-app" id="synApp" style="overflow:hidden;position:relative;display:block;height:588px;">
+      <div class="syn-app" id="synApp" style="overflow:hidden;position:relative;display:block;">
         <iframe
           id="synIframe"
           src="sourcing.html"
-          style="width:1470px;height:840px;border:none;display:block;transform:scale(0.70);transform-origin:top left;"
+          style="border:none;display:block;position:absolute;top:0;left:0;"
           allow="microphone; clipboard-write"
         ></iframe>
         <div id="synFallback" style="display:none;position:absolute;inset:0;background:#0a0a0f;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:'DM Sans',sans-serif;text-align:center;padding:40px">
@@ -981,24 +981,21 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   function scaleMobileDemo() {
     if (!synApp || !iframe) return;
     var vw = window.innerWidth;
+    var scale, displayH;
     if (vw > 640) {
-      // Desktop: restore originals exactly — do not touch
-      iframe.style.transform = 'scale(' + DESKTOP_SCALE + ')';
-      iframe.style.width = NATIVE_W + 'px';
-      iframe.style.height = NATIVE_H + 'px';
-      iframe.style.transformOrigin = 'top left';
-      synApp.style.height = '588px';
+      scale = DESKTOP_SCALE;
+      displayH = Math.round(NATIVE_H * scale); // 588px
     } else {
-      // Mobile: scale by WIDTH so entire app fits horizontally, short box
       var chrome = document.querySelector('.demo-chrome');
       var availW = chrome ? chrome.clientWidth : vw - 24;
-      var scale = availW / NATIVE_W;
-      iframe.style.width = NATIVE_W + 'px';
-      iframe.style.height = NATIVE_H + 'px';
-      iframe.style.transformOrigin = 'top left';
-      iframe.style.transform = 'scale(' + scale + ')';
-      synApp.style.height = Math.round(NATIVE_H * scale) + 'px';
+      scale = availW / NATIVE_W;
+      displayH = Math.round(NATIVE_H * scale);
     }
+    iframe.style.width = NATIVE_W + 'px';
+    iframe.style.height = NATIVE_H + 'px';
+    iframe.style.transformOrigin = 'top left';
+    iframe.style.transform = 'scale(' + scale + ')';
+    synApp.style.height = displayH + 'px';
   }
   scaleMobileDemo();
   window.addEventListener('resize', scaleMobileDemo);
