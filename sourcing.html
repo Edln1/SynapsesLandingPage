@@ -27958,42 +27958,4 @@ window.addEventListener('message', function(e) {
   }
 })();
 </script>
-
-<script>
-// ── Mobile-embed right-edge fix ──
-// On the landing page mobile view this iframe is scaled down (~0.24) but its
-// internal width is still 1470px, so elements pinned to the true right edge
-// (robotTooltip, tinyBotCanvas, winStrip, sticky notes near lW-177) render
-// past the visible scaled box. Detect the mobile embed via the parent's
-// viewport width and shift these elements left. Desktop is untouched.
-(function(){
-  function isMobileEmbed(){
-    try {
-      return window.parent !== window && window.parent.innerWidth <= 600;
-    } catch(e){ return false; }
-  }
-  function applyMobileShift(){
-    if (!isMobileEmbed()) return;
-    var SHIFT = 140; // px to pull elements in from the right edge
-
-    var rt = document.getElementById('robotTooltip');
-    if (rt) { rt.style.right = (24 + SHIFT) + 'px'; }
-
-    var tc = document.getElementById('tinyBotCanvas');
-    if (tc) { tc.style.right = SHIFT + 'px'; }
-
-    var ws = document.getElementById('winStrip');
-    if (ws) { ws.style.right = SHIFT + 'px'; }
-
-    var styleTag = document.createElement('style');
-    styleTag.textContent = '.sticky-note{ transform: translateX(-' + SHIFT + 'px) !important; }';
-    document.head.appendChild(styleTag);
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(applyMobileShift, 1500); });
-  } else {
-    setTimeout(applyMobileShift, 1500);
-  }
-})();
-</script>
 </body>
