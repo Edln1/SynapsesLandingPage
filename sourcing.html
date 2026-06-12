@@ -27985,9 +27985,20 @@ window.addEventListener('message', function(e) {
     var ws = document.getElementById('winStrip');
     if (ws) { ws.style.right = SHIFT + 'px'; }
 
-    var styleTag = document.createElement('style');
-    styleTag.textContent = '.sticky-note{ transform: translateX(-' + SHIFT + 'px) !important; }';
-    document.head.appendChild(styleTag);
+    var sc = document.getElementById('synBotChat');
+    if (sc) { sc.style.right = (22 + SHIFT) + 'px'; }
+
+    // Sticky notes are created dynamically with inline left/top (based on lW=1470).
+    // Poll and shift any unshifted notes left by SHIFT px.
+    setInterval(function(){
+      var notes = document.querySelectorAll('.sticky-note-2030');
+      notes.forEach(function(n){
+        if (n.dataset.mobileShifted) return;
+        var curLeft = parseFloat(n.style.left) || 0;
+        n.style.left = (curLeft - SHIFT) + 'px';
+        n.dataset.mobileShifted = '1';
+      });
+    }, 300);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function(){ setTimeout(applyMobileShift, 1500); });
