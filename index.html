@@ -301,8 +301,9 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
   .demo-dot{width:5px;height:5px}
   .demo-dots{gap:3px}
   .demo-url{font-size:8px;padding:2px 6px;max-width:160px}
-  .demo-chrome{overflow:hidden!important}
+  .demo-chrome{overflow:hidden!important;clip-path:inset(0)!important}
   .demo-wrapper{overflow:hidden}
+  #synApp{clip-path:inset(0)!important}
 
   /* Sections */
   .lp-section{padding:48px 20px}
@@ -337,6 +338,17 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
   /* CTA row */
   .cta-btns-row{flex-direction:column;align-items:stretch;padding:0 8px}
   .cta-btns-row .cta-big,.cta-btns-row .cta-call{text-align:center;justify-content:center;width:100%}
+
+  /* Voice overlay — scale down to fit short demo box */
+  #dVoiceOverlay{gap:8px!important}
+  #dVoiceCore{width:52px!important;height:52px!important}
+  #dVoiceCore svg{width:18px!important;height:18px!important}
+  .dv-halo{width:90px!important;height:90px!important}
+  #dVoiceLabel{font-size:10px!important;min-height:14px!important}
+  #dVoiceReply{font-size:10px!important}
+  #dVoiceToast{font-size:10px!important;padding:5px 10px!important}
+  #dVoiceOverlay > div:nth-child(2){height:18px!important}
+  .dv-bar{width:2px!important}
 }
 
 .cta-btns-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
@@ -417,9 +429,9 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
           <div style="color:rgba(180,174,255,0.6);font-size:13px;max-width:340px;line-height:1.7">Upload both <code style="color:#7c6af7">index.html</code> and <code style="color:#7c6af7">sourcing.html</code> to GitHub Pages — the full app will load here automatically.</div>
         </div>
         <!-- Voice demo overlay — sits on top of iframe during voice scene -->
-        <div id="dVoiceOverlay" style="display:none;position:absolute;inset:0;z-index:10;background:rgba(8,7,20,0.92);backdrop-filter:blur(18px);align-items:center;justify-content:center;flex-direction:column;gap:24px;">
+        <div id="dVoiceOverlay" style="display:none;position:absolute;inset:0;z-index:10;background:rgba(8,7,20,0.92);backdrop-filter:blur(18px);align-items:center;justify-content:center;flex-direction:column;gap:24px;overflow:hidden;">
           <div style="position:relative;display:flex;align-items:center;justify-content:center;">
-            <div id="dVoiceHalo" style="display:none;position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(124,106,247,0.25) 0%,transparent 70%);animation:voiceHalo 1.8s ease-in-out infinite;"></div>
+            <div id="dVoiceHalo" style="display:none;position:absolute;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(124,106,247,0.25) 0%,transparent 70%);animation:voiceHalo 1.8s ease-in-out infinite;" class="dv-halo"></div>
             <div id="dVoiceCore" style="width:96px;height:96px;border-radius:50%;background:rgba(124,106,247,0.15);border:2px solid rgba(124,106,247,0.5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(124,106,247,0.6),0 0 60px rgba(124,106,247,0.25);transition:box-shadow .4s;">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(180,170,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             </div>
