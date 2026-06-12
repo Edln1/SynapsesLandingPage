@@ -289,9 +289,8 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
   /* Demo window */
   .demo-wrapper{padding:0 12px}
   .demo-chrome{border-radius:12px}
-  .syn-app{height:260px;overflow:hidden}
+  .syn-app{overflow:hidden}
   .syn-sidebar{display:none}
-  #synIframe{width:960px;height:588px;transform:scale(0.395);transform-origin:top left}
 
   /* Sections */
   .lp-section{padding:48px 20px}
@@ -972,6 +971,40 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   function send(action, target, duration) {
     try { iframe.contentWindow.postMessage({ src:'synapses-demo', action:action, target:target, duration:duration }, '*'); } catch(e) {}
   }
+
+  // Mobile-only iframe scaler — never touches desktop layout
+  var synApp = document.getElementById('synApp');
+  var NATIVE_W = 1470, NATIVE_H = 840, DESKTOP_SCALE = 0.70;
+  // Native x position of the main content (past the sidebar ~56px)
+  // We want to show the main chat/content area centered
+  var SIDEBAR_W = 56;
+  function scaleMobileDemo() {
+    if (!synApp || !iframe) return;
+    var vw = window.innerWidth;
+    if (vw > 640) {
+      // Desktop: restore originals exactly — do not touch
+      iframe.style.transform = 'scale(' + DESKTOP_SCALE + ')';
+      iframe.style.width = NATIVE_W + 'px';
+      iframe.style.height = NATIVE_H + 'px';
+      iframe.style.transformOrigin = 'top left';
+      synApp.style.height = '588px';
+    } else {
+      // Mobile: scale by height so preview is ~400px tall, center on main content
+      var targetH = Math.min(420, Math.round(vw * 1.1));
+      var scale = targetH / NATIVE_H;
+      var renderedW = NATIVE_W * scale;
+      // Shift so main content area (past sidebar) is centered in viewport
+      var mainContentCenterNative = SIDEBAR_W + (NATIVE_W - SIDEBAR_W) / 2;
+      var shiftX = (vw / 2) - (mainContentCenterNative * scale);
+      iframe.style.width = NATIVE_W + 'px';
+      iframe.style.height = NATIVE_H + 'px';
+      iframe.style.transformOrigin = 'top left';
+      iframe.style.transform = 'scale(' + scale + ') translateX(' + Math.round(shiftX / scale) + 'px)';
+      synApp.style.height = targetH + 'px';
+    }
+  }
+  scaleMobileDemo();
+  window.addEventListener('resize', scaleMobileDemo);
 
   // When iframe signals user returned to chat page, sync topbar show
   window.addEventListener('message', function(e) {
