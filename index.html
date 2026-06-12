@@ -989,18 +989,15 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
       iframe.style.transformOrigin = 'top left';
       synApp.style.height = '588px';
     } else {
-      // Mobile: scale by height so preview is ~400px tall, center on main content
-      var targetH = Math.min(420, Math.round(vw * 1.1));
-      var scale = targetH / NATIVE_H;
-      var renderedW = NATIVE_W * scale;
-      // Shift so main content area (past sidebar) is centered in viewport
-      var mainContentCenterNative = SIDEBAR_W + (NATIVE_W - SIDEBAR_W) / 2;
-      var shiftX = (vw / 2) - (mainContentCenterNative * scale);
+      // Mobile: scale by WIDTH so entire app fits horizontally, short box
+      var chrome = document.querySelector('.demo-chrome');
+      var availW = chrome ? chrome.clientWidth : vw - 24;
+      var scale = availW / NATIVE_W;
       iframe.style.width = NATIVE_W + 'px';
       iframe.style.height = NATIVE_H + 'px';
       iframe.style.transformOrigin = 'top left';
-      iframe.style.transform = 'scale(' + scale + ') translateX(' + Math.round(shiftX / scale) + 'px)';
-      synApp.style.height = targetH + 'px';
+      iframe.style.transform = 'scale(' + scale + ')';
+      synApp.style.height = Math.round(NATIVE_H * scale) + 'px';
     }
   }
   scaleMobileDemo();
