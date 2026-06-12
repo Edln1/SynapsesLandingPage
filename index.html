@@ -297,10 +297,12 @@ footer{border-top:1px solid var(--border);padding:44px 40px;display:flex;align-i
     display:block!important;
   }
   .syn-sidebar{display:none}
-  .demo-titlebar{padding:6px 10px;gap:7px}
-  .demo-dot{width:7px;height:7px}
-  .demo-dots{gap:4px}
-  .demo-url{font-size:9px;padding:3px 8px}
+  .demo-titlebar{padding:4px 8px;gap:5px}
+  .demo-dot{width:5px;height:5px}
+  .demo-dots{gap:3px}
+  .demo-url{font-size:8px;padding:2px 6px;max-width:160px}
+  .demo-chrome{overflow:hidden!important}
+  .demo-wrapper{overflow:hidden}
 
   /* Sections */
   .lp-section{padding:48px 20px}
@@ -970,12 +972,21 @@ document.querySelectorAll('.syn-cat-tab').forEach(function(tab){
   iframe.addEventListener('load', function(){
     fallback.style.display = 'none';
     iframe.style.display = 'block';
-    // On mobile: one-time blur of any autofocused input on load — nothing else
+    // On mobile: block keyboard from opening unless user explicitly tapped an input
     if (window.innerWidth <= 640) {
       try {
         var iDoc = iframe.contentDocument || iframe.contentWindow.document;
-        var focused = iDoc.activeElement;
-        if (focused && focused !== iDoc.body) focused.blur();
+        // Blur anything autofocused on load
+        if (iDoc.activeElement && iDoc.activeElement !== iDoc.body) iDoc.activeElement.blur();
+        // Intercept all focus events — only allow if triggered by a real user touch
+        var _userTouching = false;
+        iDoc.addEventListener('touchstart', function(){ _userTouching = true; }, { passive: true, capture: true });
+        iDoc.addEventListener('touchend', function(){ setTimeout(function(){ _userTouching = false; }, 300); }, { passive: true, capture: true });
+        iDoc.addEventListener('focus', function(e) {
+          if (!_userTouching && e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+            e.target.blur();
+          }
+        }, true);
       } catch(e) {}
     }
   });
